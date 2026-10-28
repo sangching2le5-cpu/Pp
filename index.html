@@ -1,0 +1,2027 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Describing People: Personality — Interactive E-Lesson</title>
+<style>
+:root{
+  --bg:#f2f7fd; --card:#ffffff; --ink:#1f2d3d; --muted:#5d6f82; --line:#dbe7f4;
+  --blue:#3b7dd8; --blue-soft:#e7f1fc; --blue-dark:#255a9e;
+  --green:#2e8b57; --green-soft:#e6f5ec; --red:#c0392b; --red-soft:#fdecea;
+  --amber:#a97a06; --amber-soft:#fdf6e3; --purple:#6b4fa8; --purple-soft:#efeaf9;
+  --radius:14px; --shadow:0 1px 2px rgba(16,40,70,.06),0 8px 22px rgba(16,40,70,.06);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif;
+  font-size:16px; line-height:1.6;
+}
+.skip{position:absolute;left:-9999px;top:0;background:#fff;padding:8px 12px;z-index:100}
+.skip:focus{left:8px;top:8px}
+/* ---------- header ---------- */
+.topbar{
+  position:sticky; top:0; z-index:40; background:linear-gradient(180deg,#ffffff 0%,#f7fbff 100%);
+  border-bottom:1px solid var(--line); box-shadow:0 2px 10px rgba(16,40,70,.05);
+  padding:10px 16px; display:flex; flex-wrap:wrap; gap:10px 18px; align-items:center;
+}
+.menu-btn{
+  display:none; background:var(--blue-soft); color:var(--blue-dark); border:1px solid var(--line);
+  border-radius:10px; padding:8px 12px; font-size:15px; cursor:pointer; font-weight:600;
+}
+.brand h1{font-size:17px; margin:0; letter-spacing:.4px; color:var(--blue-dark)}
+.brand p{margin:0; font-size:12.5px; color:var(--muted)}
+.stats{display:flex; flex-wrap:wrap; gap:8px; margin-left:auto}
+.stat{
+  background:var(--card); border:1px solid var(--line); border-radius:12px;
+  padding:6px 11px; font-size:12.5px; color:var(--muted); box-shadow:var(--shadow);
+  min-width:0;
+}
+.stat b{display:block; color:var(--ink); font-size:14px; font-weight:700}
+.stat .bar{height:5px; background:var(--blue-soft); border-radius:99px; margin-top:5px; overflow:hidden; width:110px}
+.stat .bar i{display:block; height:100%; background:var(--blue); width:0%; transition:width .35s}
+/* ---------- layout ---------- */
+.layout{display:grid; grid-template-columns:265px 1fr; gap:20px; max-width:1400px; margin:0 auto; padding:20px 16px 70px}
+.sidebar{
+  align-self:start; position:sticky; top:88px; background:var(--card); border:1px solid var(--line);
+  border-radius:var(--radius); box-shadow:var(--shadow); padding:14px; max-height:calc(100vh - 110px); overflow:auto;
+}
+.sidebar h2{font-size:12px; text-transform:uppercase; letter-spacing:1px; color:var(--muted); margin:0 0 10px}
+.sidebar nav a{
+  display:block; padding:8px 10px; border-radius:9px; color:var(--ink); text-decoration:none;
+  font-size:14px; margin-bottom:3px; border-left:3px solid transparent;
+}
+.sidebar nav a:hover{background:var(--blue-soft)}
+.sidebar nav a.active{background:var(--blue-soft); border-left-color:var(--blue); font-weight:600; color:var(--blue-dark)}
+.sidebar nav a:focus-visible{outline:2px solid var(--blue); outline-offset:1px}
+main{min-width:0}
+section.card{
+  background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
+  box-shadow:var(--shadow); padding:22px 24px; margin-bottom:22px; scroll-margin-top:92px;
+}
+section.card > h2{
+  font-size:20px; margin:0 0 6px; color:var(--blue-dark); border-bottom:2px solid var(--blue-soft);
+  padding-bottom:10px;
+}
+h3{font-size:16px; margin:22px 0 10px; color:var(--blue-dark)}
+h4{font-size:15px; margin:16px 0 8px}
+p.lead{margin-top:0; color:var(--muted)}
+ul.notes{margin:8px 0 12px; padding-left:20px}
+ul.notes li{margin-bottom:5px; font-size:14.5px}
+.small{font-size:13.5px; color:var(--muted)}
+/* ---------- vocab ---------- */
+.vgrid{display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:12px; margin:12px 0}
+.vcard{border:1px solid var(--line); border-radius:12px; padding:12px 14px; background:#fbfdff; transition:border-color .15s}
+.vcard:hover{border-color:#bcd6f3}
+.vhead{display:flex; align-items:center; gap:8px; flex-wrap:wrap}
+.vhead .word{font-weight:700; font-size:16.5px; color:var(--blue-dark)}
+.pos{font-size:11.5px; background:var(--blue-soft); color:var(--blue-dark); border-radius:6px; padding:1px 6px; font-style:italic}
+.stress{color:var(--red); font-weight:800}
+.ipa{font-family:"Segoe UI",Arial,sans-serif; font-size:13px; color:var(--muted); margin:4px 0}
+.ipa .tag{display:inline-block; font-size:10.5px; font-weight:700; background:var(--blue-soft); color:var(--blue-dark); border-radius:5px; padding:0 5px; margin-right:3px}
+.vi{font-size:14.5px; margin:3px 0}
+.note-warn{font-size:13px; background:var(--amber-soft); border-left:3px solid var(--amber); padding:6px 9px; border-radius:6px; margin:6px 0; color:#6b5200}
+.ex{font-size:13.5px; font-style:italic; color:#33475e; margin-top:6px; border-left:3px solid var(--blue-soft); padding-left:9px}
+.ex-vi{font-size:12.5px; color:var(--muted); font-style:normal; display:block}
+.play{
+  background:var(--blue-soft); border:1px solid var(--line); color:var(--blue-dark); cursor:pointer;
+  border-radius:8px; padding:2px 8px; font-size:12.5px; line-height:1.5; font-weight:600;
+}
+.play:hover{background:#d6e7fa}
+.play:focus-visible{outline:2px solid var(--blue); outline-offset:1px}
+/* ---------- tables ---------- */
+.tablewrap{overflow-x:auto; margin:10px 0}
+table{border-collapse:collapse; width:100%; font-size:14px; background:#fff}
+th,td{border:1px solid var(--line); padding:7px 10px; text-align:left; vertical-align:top}
+th{background:var(--blue-soft); color:var(--blue-dark); font-size:13px}
+tbody tr:nth-child(even){background:#fafcff}
+td.neg{color:#8a2f22}
+td.pos{color:#1f6b45}
+/* ---------- buttons / inputs ---------- */
+button.btn{
+  background:var(--blue); color:#fff; border:none; border-radius:10px; padding:9px 16px;
+  font-size:14.5px; font-weight:600; cursor:pointer; margin:6px 8px 6px 0;
+}
+button.btn:hover{background:var(--blue-dark)}
+button.btn:focus-visible{outline:3px solid #9fc6f2; outline-offset:1px}
+button.btn.ghost{background:#fff; color:var(--blue-dark); border:1px solid var(--blue)}
+button.btn.ghost:hover{background:var(--blue-soft)}
+button.btn.warn{background:#fff; color:var(--red); border:1px solid var(--red)}
+button.btn.warn:hover{background:var(--red-soft)}
+button.btn.small-btn{padding:5px 11px; font-size:13px}
+button.btn:disabled{opacity:.55; cursor:not-allowed}
+input[type=text], textarea, select{
+  font-family:inherit; font-size:14.5px; padding:8px 10px; border:1px solid var(--line);
+  border-radius:9px; background:#fff; color:var(--ink); width:100%; max-width:100%;
+}
+input[type=text]:focus, textarea:focus, select:focus{outline:2px solid #9fc6f2; border-color:var(--blue)}
+textarea{min-height:64px; resize:vertical}
+label{font-size:14.5px}
+/* ---------- exercise blocks ---------- */
+.exercise{border:1px solid var(--line); border-radius:12px; padding:16px 18px; margin:16px 0; background:#fdfeff}
+.exercise > h3{margin-top:0}
+.instr{font-size:14px; color:var(--muted); margin:0 0 12px}
+.row{display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-bottom:9px}
+.row .qtext{flex:1 1 320px; min-width:220px; font-size:14.5px}
+.row select{max-width:260px; flex:0 0 auto; width:auto}
+.fb{margin-top:10px; font-size:14px}
+.ok{color:var(--green); font-weight:600}
+.bad{color:var(--red); font-weight:600}
+.result{
+  margin-top:12px; padding:11px 14px; border-radius:10px; font-weight:600; font-size:15px;
+  background:var(--blue-soft); color:var(--blue-dark);
+}
+.result.pass{background:var(--green-soft); color:var(--green)}
+.result.fail{background:var(--red-soft); color:var(--red)}
+.model-box{background:var(--green-soft); border:1px dashed #9ed3b4; border-radius:10px; padding:10px 13px; margin-top:8px; font-size:14px}
+.chips{display:flex; flex-wrap:wrap; gap:8px; margin:8px 0}
+.chip{
+  background:#fff; border:1px solid var(--line); border-radius:99px; padding:6px 14px; cursor:pointer;
+  font-size:14px; color:var(--ink);
+}
+.chip:hover{border-color:var(--blue); background:var(--blue-soft)}
+.chip.sel{background:var(--blue); color:#fff; border-color:var(--blue)}
+.chip.locked{background:#eef4fb; color:var(--muted); cursor:default; border-style:dashed}
+.chip:focus-visible{outline:2px solid var(--blue); outline-offset:2px}
+.pairlist{display:flex; flex-wrap:wrap; gap:8px; margin-top:10px}
+.pairitem{background:var(--blue-soft); border:1px solid var(--line); border-radius:9px; padding:5px 10px; font-size:13.5px; display:flex; gap:7px; align-items:center}
+.pairitem button{background:none; border:none; color:var(--red); cursor:pointer; font-size:15px; padding:0 2px}
+.pairitem.correct{background:var(--green-soft); border-color:#a8d8bb}
+.pairitem.wrong{background:var(--red-soft); border-color:#eeb4ad}
+.columnlabel{font-size:12px; font-weight:700; color:var(--muted); letter-spacing:.5px; margin-top:8px}
+.radio-line{display:flex; gap:16px; flex-wrap:wrap; margin:5px 0}
+.radio-line label{display:flex; align-items:center; gap:6px; font-size:14px; cursor:pointer}
+.radio-line input{width:auto}
+/* ---------- flashcards ---------- */
+.flash{
+  perspective:1000px; max-width:420px; margin:14px auto;
+}
+.flash-inner{
+  background:linear-gradient(160deg,#f7fbff,#eaf3fd); border:1px solid var(--line); border-radius:16px;
+  min-height:170px; display:flex; flex-direction:column; align-items:center; justify-content:center;
+  padding:20px; text-align:center; box-shadow:var(--shadow);
+}
+.flash-inner .fw{font-size:26px; font-weight:800; color:var(--blue-dark)}
+.flash-inner .fvi{font-size:17px; margin-top:10px; color:#1f6b45}
+.flash-inner .fipa{font-size:13px; color:var(--muted); margin-top:6px}
+/* ---------- misc ---------- */
+.badge{display:inline-block; font-size:11.5px; font-weight:700; padding:2px 8px; border-radius:99px; background:var(--purple-soft); color:var(--purple); margin-left:8px; vertical-align:middle}
+.badge.warnbadge{background:var(--amber-soft); color:var(--amber)}
+.toast{
+  position:fixed; left:50%; bottom:24px; transform:translateX(-50%) translateY(20px);
+  background:#22374f; color:#fff; padding:11px 20px; border-radius:11px; font-size:14px;
+  opacity:0; pointer-events:none; transition:.28s; z-index:80; max-width:90vw; text-align:center;
+}
+.toast.show{opacity:1; transform:translateX(-50%) translateY(0)}
+.progress-list{list-style:none; padding:0; margin:10px 0}
+.progress-list li{
+  display:flex; justify-content:space-between; gap:12px; padding:9px 12px; border:1px solid var(--line);
+  border-radius:10px; margin-bottom:7px; font-size:14px; background:#fbfdff; flex-wrap:wrap;
+}
+.progress-list li b{color:var(--blue-dark)}
+details{border:1px solid var(--line); border-radius:10px; padding:10px 14px; margin:10px 0; background:#fbfdff}
+summary{cursor:pointer; font-weight:600; color:var(--blue-dark)}
+.src-block{border-left:3px solid var(--blue-soft); padding-left:14px; margin:12px 0}
+audio{max-width:100%; margin-top:8px}
+.checklist label{display:flex; gap:9px; align-items:flex-start; font-size:14px; margin-bottom:6px; cursor:pointer}
+.checklist input{margin-top:4px; width:auto}
+.person-box{border:1px solid var(--line); border-radius:12px; padding:14px; background:#fbfdff; margin-bottom:14px}
+.person-box h4{margin-top:0}
+@media (max-width:960px){
+  .layout{grid-template-columns:1fr; padding:14px 12px 60px}
+  .sidebar{
+    position:fixed; left:0; top:0; height:100vh; width:280px; max-height:100vh; z-index:60;
+    border-radius:0; transform:translateX(-102%); transition:transform .25s; padding-top:60px;
+  }
+  .sidebar.open{transform:translateX(0)}
+  .menu-btn{display:block}
+  .stats{width:100%; margin-left:0; overflow-x:auto; flex-wrap:nowrap; padding-bottom:2px}
+  .stat{flex:0 0 auto}
+  section.card{padding:18px 16px}
+  .brand h1{font-size:15px}
+}
+@media (max-width:520px){
+  body{font-size:15px}
+  .vgrid{grid-template-columns:1fr}
+  .flash-inner .fw{font-size:22px}
+}
+.scrim{display:none; position:fixed; inset:0; background:rgba(20,40,70,.35); z-index:55}
+.scrim.on{display:block}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Bỏ qua điều hướng</a>
+
+<header class="topbar">
+  <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="sidebar">☰ Menu</button>
+  <div class="brand">
+    <h1>DESCRIBING PEOPLE: PERSONALITY</h1>
+    <p>English Vocabulary in Use — Upper-intermediate · Unit 8 · B2</p>
+  </div>
+  <div class="stats" id="stats">
+    <div class="stat">Mục đang học<b id="statSection">Learning objectives</b></div>
+    <div class="stat">Hoàn thành<b id="statPercent">0%</b><span class="bar"><i id="statBar"></i></span></div>
+    <div class="stat">Hoạt động đã xong<b id="statDone">0 / 18</b></div>
+    <div class="stat">Ôn từ vựng<b id="statVocab">0 / 0</b></div>
+    <div class="stat">Điểm bài tập<b id="statScores">—</b></div>
+  </div>
+</header>
+
+<div class="scrim" id="scrim"></div>
+
+<div class="layout">
+  <aside class="sidebar" id="sidebar">
+    <h2>Nội dung bài học</h2>
+    <nav id="nav">
+      <a href="#sec-objectives">1. Learning objectives</a>
+      <a href="#sec-a">2. A. Intellectual ability</a>
+      <a href="#sec-b">3. B. Attitudes towards life</a>
+      <a href="#sec-c">4. C. Attitudes towards other people</a>
+      <a href="#sec-d">5. D. One person's meat…</a>
+      <a href="#sec-pron">6. Pronunciation laboratory</a>
+      <a href="#sec-ex">7. Original exercises</a>
+      <a href="#sec-extra">8. Additional Practice</a>
+      <a href="#sec-source">9. Original Source</a>
+      <a href="#sec-progress">10. Progress dashboard</a>
+    </nav>
+  </aside>
+
+  <main id="main">
+
+    <!-- ============ 1. OBJECTIVES ============ -->
+    <section class="card" id="sec-objectives">
+      <h2>1. Learning objectives – Mục tiêu bài học</h2>
+      <p class="lead">Sau bài học, người học có thể:</p>
+      <ul class="notes">
+        <li>Nhận biết và sử dụng các tính từ miêu tả trí tuệ, thái độ sống và cách ứng xử với người khác.</li>
+        <li>Phân biệt từ mang sắc thái tích cực và tiêu cực.</li>
+        <li>Sử dụng từ vựng trong ngữ cảnh phù hợp, tránh những từ có thể gây xúc phạm.</li>
+        <li>Đặt câu hỏi để tìm hiểu tính cách của một người.</li>
+        <li>Miêu tả hai người quan trọng trong cuộc sống bằng các tính từ phù hợp và giải thích lý do.</li>
+      </ul>
+      <h3>In English — By the end of the lesson, learners will be able to:</h3>
+      <ul class="notes">
+        <li>Describe <b>intellectual ability</b> using positive, neutral and negative adjectives.</li>
+        <li>Describe <b>attitudes towards life</b> (optimistic/pessimistic, tense/relaxed, sensible/practical).</li>
+        <li>Describe <b>attitudes towards other people</b> (sociable, quarrelsome, easy-going, polite, honest, jealous).</li>
+        <li>Distinguish <b>positive and negative connotations</b> of near-synonyms.</li>
+        <li>Recognize <b>register differences</b> (formal / neutral / informal / offensive).</li>
+        <li>Use personality adjectives <b>in context</b>.</li>
+        <li><b>Ask and answer questions</b> about personality.</li>
+      </ul>
+      <div class="note-warn">
+        <b>Lưu ý về ngôn ngữ:</b> Một số từ trong bài (ví dụ <i>stupid, thick, dumb, brainless</i>) rất mạnh và có thể gây xúc phạm.
+        Không nên dùng chúng để đánh giá trực tiếp người khác trong giao tiếp lịch sự.
+      </div>
+      <button class="btn" data-complete="objectives">Đánh dấu đã học xong mục này</button>
+    </section>
+
+    <!-- ============ 2. A ============ -->
+    <section class="card" id="sec-a">
+      <h2>2. A. Intellectual ability – Khả năng trí tuệ</h2>
+      <div id="sec-a-body"></div>
+      <button class="btn" data-complete="a">Đánh dấu đã học xong mục A</button>
+    </section>
+
+    <!-- ============ 3. B ============ -->
+    <section class="card" id="sec-b">
+      <h2>3. B. Attitudes towards life – Thái độ đối với cuộc sống</h2>
+      <div id="sec-b-body"></div>
+      <button class="btn" data-complete="b">Đánh dấu đã học xong mục B</button>
+    </section>
+
+    <!-- ============ 4. C ============ -->
+    <section class="card" id="sec-c">
+      <h2>4. C. Attitudes towards other people – Thái độ đối với người khác</h2>
+      <div id="sec-c-body"></div>
+      <button class="btn" data-complete="c">Đánh dấu đã học xong mục C</button>
+    </section>
+
+    <!-- ============ 5. D ============ -->
+    <section class="card" id="sec-d">
+      <h2>5. D. One person's meat is another person's poison – Mỗi người có một quan điểm khác nhau</h2>
+      <p>
+        Thành ngữ này có nghĩa là điều một người thích hoặc đánh giá cao có thể không được người khác yêu thích.
+        Một tính cách có thể được nhìn nhận tích cực hoặc tiêu cực tùy hoàn cảnh và quan điểm.
+      </p>
+      <div class="tablewrap"><table id="d-table"></table></div>
+      <h3>Lưu ý về sắc thái nghĩa</h3>
+      <ul class="notes">
+        <li><b>Thrifty</b> thường được khen là biết tiết kiệm; <b>stingy</b> thường bị chê là keo kiệt.</li>
+        <li><b>Confident</b> thể hiện sự tự tin; <b>arrogant</b> thể hiện sự tự cao, coi mình hơn người.</li>
+        <li><b>Assertive</b> là biết thể hiện quan điểm và bảo vệ quyền lợi một cách rõ ràng; <b>aggressive</b> thiên về thái độ đối đầu hoặc gây hấn.</li>
+        <li><b>Inquiring</b> hoặc <b>enquiring</b> có thể diễn tả sự ham tìm hiểu; <b>nosy</b> thường mang nghĩa tò mò chuyện riêng của người khác.</li>
+        <li><b>Naive</b> thường nhấn mạnh sự thiếu kinh nghiệm hoặc dễ tin người; <b>innocent</b> có thể mang nghĩa trong sáng hoặc vô tội.</li>
+      </ul>
+      <div class="note-warn">
+        <b>Teacher note:</b> Đây là những <i>liên tưởng ngữ cảnh</i>, không phải cặp từ đồng nghĩa tuyệt đối hay trái nghĩa tuyệt đối.
+        Ví dụ <i>assertive</i> không phải lúc nào cũng là từ trái nghĩa trực tiếp của <i>bossy</i> hoặc <i>aggressive</i>.
+      </div>
+      <div class="note-warn">
+        <b>Source note (flagged for review):</b> Bản nguồn được cung cấp <u>không</u> chứa từ <i>abrupt</i>, dù bản mô tả yêu cầu có nhắc tới.
+        Ứng dụng giữ nguyên đúng nội dung nguồn và không tự thêm từ này.
+      </div>
+      <button class="btn" data-complete="d">Đánh dấu đã học xong mục D</button>
+    </section>
+
+    <!-- ============ 6. PRONUNCIATION ============ -->
+    <section class="card" id="sec-pron">
+      <h2>6. Pronunciation laboratory – Phòng luyện phát âm</h2>
+      <p class="lead">
+        Chọn giọng Anh-Anh (en-GB) hoặc Anh-Mỹ (en-US). Nhấn nút ▶ để nghe. IPA được hiển thị riêng cho từng biến thể.
+      </p>
+
+      <div class="note-warn" id="ttsNotice">
+        <b>Về âm thanh:</b> Ứng dụng này <u>không</u> kèm file ghi âm thật. Nút ▶ sử dụng
+        <i>browser speech synthesis</i> (Web Speech API) như một giải pháp thay thế được ghi rõ nhãn.
+        Chất lượng giọng phụ thuộc vào thiết bị và hệ điều hành của bạn và <u>không được bảo đảm</u> giống người bản ngữ.
+        Nếu thiết bị không có giọng phù hợp, ứng dụng sẽ thông báo rõ ràng.
+      </div>
+
+      <div class="row">
+        <label for="accentSel"><b>Accent:</b></label>
+        <select id="accentSel" style="max-width:220px">
+          <option value="en-GB">British English (en-GB)</option>
+          <option value="en-US">American English (en-US)</option>
+        </select>
+        <label style="display:flex;align-items:center;gap:7px">
+          <input type="checkbox" id="slowMode" style="width:auto"> Slow practice mode
+        </label>
+        <button class="btn ghost small-btn" id="testVoiceBtn">Kiểm tra giọng khả dụng</button>
+      </div>
+      <div id="voiceStatus" class="small"></div>
+
+      <h3>Bảng phát âm toàn bộ từ vựng bài học</h3>
+      <div class="row">
+        <input type="text" id="pronFilter" placeholder="Lọc theo từ hoặc nghĩa tiếng Việt…" style="max-width:420px">
+        <button class="btn ghost small-btn" id="pronReadAll">Đọc tất cả (chậm)</button>
+      </div>
+      <p class="small">Số lần luyện phát âm của bạn: <b id="pronCount">0</b></p>
+      <div class="tablewrap">
+        <table id="pronTable">
+          <thead>
+            <tr><th>Từ</th><th>GB (en-GB)</th><th>US (en-US)</th><th>Nghĩa</th><th>Trọng âm</th><th>Nghe</th></tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <p class="small">
+        Ghi chú: khi IPA của hai biến thể khác nhau, ô tương ứng được tô đậm. Số âm tiết mang tính ước lượng từ phiên âm IPA.
+      </p>
+      <button class="btn" data-complete="pron">Đánh dấu đã luyện phát âm xong</button>
+    </section>
+
+    <!-- ============ 7. ORIGINAL EXERCISES ============ -->
+    <section class="card" id="sec-ex">
+      <h2>7. Original exercises – Bài tập gốc (8.1 – 8.6)</h2>
+      <p class="lead">
+        Toàn bộ sáu bài tập gốc được giữ nguyên nội dung và thứ tự. Điểm được lưu vào localStorage.
+      </p>
+
+      <!-- 8.1 -->
+      <div class="exercise" id="ex81">
+        <h3>Exercise 8.1 – Match the opposites</h3>
+        <p class="instr">Nối các từ ở cột trái với từ trái nghĩa ở cột phải.</p>
+        <div id="ex81-body"></div>
+        <button class="btn" id="ex81-submit">Chấm điểm</button>
+        <button class="btn ghost" id="ex81-reset">Làm lại</button>
+        <div id="ex81-result"></div>
+      </div>
+
+      <!-- 8.2 -->
+      <div class="exercise" id="ex82">
+        <h3>Exercise 8.2 – Positive or negative impressions</h3>
+        <p class="instr">
+          Xác định mỗi câu thể hiện ấn tượng tích cực hay tiêu cực về một người.
+          Sau đó, viết lại câu để thể hiện sắc thái ngược lại.
+        </p>
+        <div class="model-box">
+          <b>Example:</b> Carmen's very thrifty.<br>
+          • Original impression: <b>Positive</b>.<br>
+          • Opposite impression: <b>Carmen's very stingy.</b>
+        </div>
+        <div id="ex82-body"></div>
+        <button class="btn" id="ex82-submit">Chấm phần tích cực/tiêu cực</button>
+        <button class="btn ghost" id="ex82-reset">Làm lại</button>
+        <div id="ex82-result"></div>
+      </div>
+
+      <!-- 8.3 -->
+      <div class="exercise" id="ex83">
+        <h3>Exercise 8.3 – Match words with similar meanings</h3>
+        <p class="instr">Ghép các từ có nghĩa tương tự. Có một cặp mẫu: brainless – silly.</p>
+        <p class="small">
+          Nhấn vào một từ, sau đó nhấn vào từ có nghĩa tương tự để tạo cặp. Cặp mẫu <b>brainless – silly</b> đã được ghép sẵn.
+        </p>
+        <div id="ex83-board"></div>
+        <div class="columnlabel">Các cặp bạn đã ghép</div>
+        <div class="pairlist" id="ex83-pairs"></div>
+        <button class="btn" id="ex83-submit">Chấm điểm</button>
+        <button class="btn ghost" id="ex83-reset">Làm lại</button>
+        <div id="ex83-result"></div>
+      </div>
+
+      <!-- 8.4 -->
+      <div class="exercise" id="ex84">
+        <h3>Exercise 8.4 – Personality questionnaire</h3>
+        <p class="instr">Đọc các câu hỏi và điền tính từ phù hợp trong danh sách.</p>
+        <div class="model-box">
+          <b>Word bank:</b> pessimistic, argumentative, sensitive, sociable, extravagant, assertive, inquisitive, reliable.
+        </div>
+        <div class="model-box">
+          <b>Example:</b> If you arrange to meet at 7 pm, do you arrive at 7 pm? → <b>reliable</b>
+        </div>
+        <div id="ex84-body"></div>
+        <button class="btn" id="ex84-submit">Chấm điểm</button>
+        <button class="btn ghost" id="ex84-reset">Làm lại</button>
+        <div id="ex84-result"></div>
+      </div>
+
+      <!-- 8.5 -->
+      <div class="exercise" id="ex85">
+        <h3>Exercise 8.5 – Write personality questions</h3>
+        <p class="instr">
+          Viết một câu hỏi tương tự Exercise 8.4 để tìm hiểu xem một người có đặc điểm tính cách sau hay không.
+        </p>
+        <div class="model-box">
+          <b>Example:</b> thrifty → Do you use up leftover food?
+        </div>
+        <div class="note-warn">
+          <b>Source note (flagged for review):</b> Bản mô tả yêu cầu nói “all eight target adjectives”,
+          nhưng nguồn được cung cấp chỉ liệt kê <b>7</b> tính từ đích (blunt, sensible, intelligent, even-tempered,
+          original, obstinate, stressed out) cùng 1 ví dụ mẫu (thrifty). Ứng dụng giữ đúng 7 mục của nguồn.
+        </div>
+        <div id="ex85-body"></div>
+        <button class="btn" id="ex85-submit">Lưu &amp; xem mẫu</button>
+        <button class="btn ghost" id="ex85-reset">Làm lại</button>
+        <div id="ex85-result"></div>
+      </div>
+
+      <!-- 8.6 -->
+      <div class="exercise" id="ex86">
+        <h3>Exercise 8.6 – Speaking: Over to you</h3>
+        <p class="instr">
+          Chọn hai người quan trọng trong cuộc sống của bạn. Miêu tả tính cách của họ bằng các tính từ trong bài
+          và giải thích vì sao bạn chọn những từ đó.
+        </p>
+        <div class="model-box">
+          <b>Example:</b><br>
+          My brother is sociable because he loves being with other people.<br>
+          My mother is sensible because she always thinks carefully before making important decisions.
+        </div>
+        <h4>Useful speaking structures</h4>
+        <ul class="notes">
+          <li>I would describe … as …</li>
+          <li>He/She is quite …</li>
+          <li>One of his/her most noticeable characteristics is …</li>
+          <li>I chose this adjective because …</li>
+          <li>Although he/she can sometimes be …, I think …</li>
+          <li>In my opinion, being … is important because …</li>
+        </ul>
+        <div id="ex86-body"></div>
+        <h4>Checklist – tự đánh giá</h4>
+        <div class="checklist" id="ex86-checklist"></div>
+        <button class="btn" id="ex86-save">Lưu bài nói / bài viết</button>
+        <button class="btn ghost" id="ex86-reset">Xoá nội dung</button>
+        <div id="ex86-result"></div>
+      </div>
+    </section>
+
+    <!-- ============ 8. ADDITIONAL PRACTICE ============ -->
+    <section class="card" id="sec-extra">
+      <h2>8. Additional Practice – Luyện tập bổ sung</h2>
+      <p class="lead">
+        <span class="badge">Bổ sung</span> Toàn bộ mục này là bài tập <b>mới được soạn thêm</b>, không phải nội dung gốc của giáo trình.
+        Mục đích là củng cố, không thay thế bài tập gốc.
+      </p>
+
+      <div class="exercise" id="p-flashcards">
+        <h3>A1. Vocabulary flashcards</h3>
+        <p class="instr">Lật thẻ để xem nghĩa tiếng Việt. Đánh dấu “Đã nhớ” để theo dõi tiến độ ôn từ.</p>
+        <div class="flash"><div class="flash-inner" id="flashInner">
+          <div class="fw">—</div>
+        </div></div>
+        <div style="text-align:center">
+          <button class="btn" id="flashFlip">Lật thẻ</button>
+          <button class="btn ghost" id="flashNext">Thẻ tiếp theo</button>
+          <button class="btn ghost" id="flashKnown">Đã nhớ ✓</button>
+        </div>
+        <p class="small" style="text-align:center">
+          Tiến độ: <b id="flashProgress">0 / 0</b>
+        </p>
+      </div>
+
+      <div class="exercise" id="p-mcq">
+        <h3>A2. Multiple-choice vocabulary questions</h3>
+        <p class="instr">Chọn nghĩa tiếng Việt đúng nhất cho từ được cho.</p>
+        <div id="mcq-body"></div>
+        <button class="btn" id="mcq-submit">Chấm điểm</button>
+        <button class="btn ghost" id="mcq-new">Bộ câu hỏi mới</button>
+        <div id="mcq-result"></div>
+      </div>
+
+      <div class="exercise" id="p-fill">
+        <h3>A3. Fill in the blank</h3>
+        <p class="instr">Điền tính từ còn thiếu vào chỗ trống, dựa vào word bank bên dưới.</p>
+        <div class="model-box"><b>Word bank:</b> <span id="fillBank"></span></div>
+        <div id="fill-body"></div>
+        <button class="btn" id="fill-submit">Chấm điểm</button>
+        <button class="btn ghost" id="fill-new">Bộ câu hỏi mới</button>
+        <div id="fill-result"></div>
+      </div>
+
+      <div class="exercise" id="p-conn">
+        <h3>A4. Positive vs negative connotation</h3>
+        <p class="instr">Xác định từ sau mang sắc thái tích cực hay tiêu cực.</p>
+        <div id="conn-body"></div>
+        <button class="btn" id="conn-submit">Chấm điểm</button>
+        <button class="btn ghost" id="conn-new">Bộ câu hỏi mới</button>
+        <div id="conn-result"></div>
+      </div>
+
+      <div class="exercise" id="p-gbus">
+        <h3>A5. British vs American pronunciation comparison</h3>
+        <p class="instr">Phiên âm nào là của tiếng Anh-Mỹ (en-US)?</p>
+        <div id="gbus-body"></div>
+        <button class="btn" id="gbus-submit">Chấm điểm</button>
+        <button class="btn ghost" id="gbus-new">Bộ câu hỏi mới</button>
+        <div id="gbus-result"></div>
+      </div>
+
+      <div class="exercise" id="p-mixed">
+        <h3>A6. Mixed review quiz</h3>
+        <p class="instr">Bài kiểm tra tổng hợp 10 câu, trộn nhiều dạng câu hỏi.</p>
+        <div id="mixed-body"></div>
+        <button class="btn" id="mixed-submit">Chấm điểm</button>
+        <button class="btn ghost" id="mixed-new">Bộ câu hỏi mới</button>
+        <div id="mixed-result"></div>
+      </div>
+    </section>
+
+    <!-- ============ 9. ORIGINAL SOURCE ============ -->
+    <section class="card" id="sec-source">
+      <h2>9. Original Source – Nguyên văn nội dung nguồn</h2>
+      <p class="lead">
+        Phần này trình bày nguyên văn nội dung nguồn được cung cấp (bản biên soạn tài liệu giảng dạy dựa trên
+        <i>English Vocabulary in Use: Upper-intermediate</i>, Unit 8, trang 22–23). Các phần giải thích bổ sung,
+        IPA, âm thanh và bài tập mới ở trên <b>không</b> nằm trong phần này.
+      </p>
+
+      <div class="src-block">
+        <p><b>DESCRIBING PEOPLE: PERSONALITY</b><br>
+        Unit 8 · Upper-intermediate (B2) · Vocabulary &amp; Speaking</p>
+      </div>
+
+      <h3>I. Learning objectives – Mục tiêu bài học</h3>
+      <div class="src-block">
+        <p>Sau bài học, người học có thể:</p>
+        <ul class="notes">
+          <li>Nhận biết và sử dụng các tính từ miêu tả trí tuệ, thái độ sống và cách ứng xử với người khác.</li>
+          <li>Phân biệt từ mang sắc thái tích cực và tiêu cực.</li>
+          <li>Sử dụng từ vựng trong ngữ cảnh phù hợp, tránh những từ có thể gây xúc phạm.</li>
+          <li>Đặt câu hỏi để tìm hiểu tính cách của một người.</li>
+          <li>Miêu tả hai người quan trọng trong cuộc sống bằng các tính từ phù hợp và giải thích lý do.</li>
+        </ul>
+      </div>
+
+      <h3>II. Vocabulary – Từ vựng trọng tâm</h3>
+      <div id="source-vocab"></div>
+
+      <h3>III. Exercises – Bài tập thực hành</h3>
+      <div class="src-block">
+        <p>Các bài tập dưới đây được giữ theo cấu trúc của tài liệu gốc, với phần hướng dẫn tiếng Việt để thuận tiện khi giảng dạy.</p>
+      </div>
+      <div id="source-exercises"></div>
+
+      <h3>IV. Answer key – Đáp án tham khảo</h3>
+      <div id="source-answers"></div>
+
+      <h3>V. Teaching suggestions – Gợi ý tổ chức giảng dạy</h3>
+      <div class="src-block">
+        <p><b>1. Presentation – Giới thiệu từ vựng</b> (15–20 phút)<br>
+        Giáo viên giải thích nghĩa, phát âm, sắc thái tích cực/tiêu cực và đưa ví dụ theo từng nhóm A–D.</p>
+        <p><b>2. Controlled practice – Luyện tập có hướng dẫn</b> (15–20 phút)<br>
+        Học sinh làm Exercises 8.1–8.3, sau đó giải thích sự khác biệt giữa những từ dễ nhầm lẫn.</p>
+        <p><b>3. Communicative practice – Luyện giao tiếp</b> (15–20 phút)<br>
+        Học sinh thực hiện Exercises 8.4–8.5 theo cặp, đặt câu hỏi và đoán tính cách của nhau.</p>
+        <p><b>4. Production – Vận dụng</b> (10–15 phút)<br>
+        Học sinh trình bày Exercise 8.6, sử dụng tối thiểu 5 tính từ và đưa ra lý do cụ thể.</p>
+      </div>
+      <div class="src-block">
+        <p><b>Tài liệu tham khảo:</b> English Vocabulary in Use: Upper-intermediate, Unit 8, “Describing people: personality”, pp. 22–23.
+        Các định nghĩa và ví dụ trong tài liệu này được biên soạn lại phục vụ giảng dạy; đáp án cho những bài yêu cầu
+        diễn đạt cá nhân chỉ mang tính tham khảo.</p>
+      </div>
+    </section>
+
+    <!-- ============ 10. PROGRESS ============ -->
+    <section class="card" id="sec-progress">
+      <h2>10. Progress dashboard – Bảng tiến độ</h2>
+      <p class="lead">Tiến độ được lưu trong <code>localStorage</code> của trình duyệt này.</p>
+      <ul class="progress-list" id="progressList"></ul>
+      <h3>Cần ôn lại</h3>
+      <ul class="progress-list" id="reviewList"></ul>
+      <button class="btn warn" id="resetBtn">Đặt lại toàn bộ tiến độ</button>
+      <p class="small" id="lsStatus"></p>
+    </section>
+
+  </main>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+'use strict';
+
+/* =========================================================
+   UTILITIES
+   ========================================================= */
+const $ = (s,r)=> (r||document).querySelector(s);
+const $$ = (s,r)=> Array.prototype.slice.call((r||document).querySelectorAll(s));
+const esc = s => String(s==null?'':s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const shuffle = a => { const x=a.slice(); for(let i=x.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1)); [x[i],x[j]]=[x[j],x[i]];} return x; };
+const norm = s => String(s||'').toLowerCase().trim().replace(/[.,!?;:]+$/,'').replace(/\s+/g,' ');
+
+let toastTimer=null;
+function toast(msg){
+  const t=$('#toast'); t.textContent=msg; t.classList.add('show');
+  clearTimeout(toastTimer); toastTimer=setTimeout(()=>t.classList.remove('show'),2600);
+}
+
+/* =========================================================
+   STATE + LOCALSTORAGE
+   ========================================================= */
+const LS_KEY='eviu_u8_personality_v1';
+const TRACKED_SECTIONS=['objectives','a','b','c','d','pron'];
+const EXERCISE_KEYS=['8.1','8.2','8.3','8.4','8.5','8.6'];
+const EXTRA_KEYS=['flashcards','mcq','fill','conn','gbus','mixed'];
+const TOTAL_ACTIVITIES=TRACKED_SECTIONS.length+EXERCISE_KEYS.length+EXTRA_KEYS.length;
+
+const DEFAULT_STATE={
+  accent:'en-GB',
+  slow:false,
+  sections:{},
+  exercises:{},
+  extra:{},
+  flashcards:{},
+  pronCount:0,
+  savedSpeaking:false
+};
+
+let storageOK=true;
+function loadState(){
+  try{
+    const raw=localStorage.getItem(LS_KEY);
+    if(!raw) return JSON.parse(JSON.stringify(DEFAULT_STATE));
+    const p=JSON.parse(raw);
+    const s=JSON.parse(JSON.stringify(DEFAULT_STATE));
+    Object.keys(s).forEach(k=>{ if(p[k]!==undefined) s[k]=p[k]; });
+    return s;
+  }catch(e){ storageOK=false; return JSON.parse(JSON.stringify(DEFAULT_STATE)); }
+}
+let state=loadState();
+function saveState(){
+  try{ localStorage.setItem(LS_KEY, JSON.stringify(state)); }
+  catch(e){ storageOK=false; }
+}
+
+function recordAttempt(bucket,key,score,total){
+  if(!state[bucket][key]) state[bucket][key]={best:0,last:0,attempts:0,total:total};
+  const r=state[bucket][key];
+  r.last=score; r.total=total; r.attempts+=1;
+  if(score>r.best) r.best=score;
+  saveState(); updateStats();
+}
+
+/* =========================================================
+   VOCABULARY DATA (transcribed from the supplied source)
+   ========================================================= */
+const SEC_A=[
+ { title:'1. Positive or neutral descriptions – Miêu tả tích cực hoặc trung tính',
+   note:`Phân biệt cần nhớ:
+
+* Intelligent: nhấn mạnh khả năng hiểu, suy luận và học hỏi.
+* Clever: nhấn mạnh sự nhanh trí hoặc khả năng tìm ra cách giải quyết.
+* Bright: thường dùng để miêu tả người tiếp thu nhanh, đặc biệt là học sinh.
+* Gifted: có năng khiếu nổi bật trong một lĩnh vực.
+* Shrewd: có khả năng đánh giá tình huống và đưa ra quyết định thực tế, đôi khi mang hàm ý vụ lợi.`,
+   items:[
+    {w:'intelligent',gb:'/ɪnˈtelɪdʒənt/',us:'/ɪnˈtelɪdʒənt/',vi:'thông minh',st:'inTELligent',ex:'She is intelligent and learns quickly.',exVi:'Cô ấy thông minh và học nhanh.'},
+    {w:'bright',gb:'/braɪt/',us:'/braɪt/',vi:'thông minh, nhanh hiểu',st:'BRIGHT',ex:'He is a bright student.',exVi:'Cậu ấy là một học sinh sáng dạ.'},
+    {w:'clever',gb:'/ˈklevə(r)/',us:'/ˈklevər/',vi:'thông minh, khéo léo',st:'CLEVer',ex:'That was a clever solution.',exVi:'Đó là một giải pháp khéo léo.'},
+    {w:'sharp',gb:'/ʃɑːp/',us:'/ʃɑːrp/',vi:'nhanh trí, sắc sảo',st:'SHARP',ex:'She has a sharp mind.',exVi:'Cô ấy có đầu óc sắc sảo.'},
+    {w:'shrewd',gb:'/ʃruːd/',us:'/ʃruːd/',vi:'sắc sảo, biết đánh giá tình huống',st:'SHREWD',ex:'He is a shrewd businessman.',exVi:'Ông ấy là một doanh nhân sắc sảo.'},
+    {w:'able',gb:'/ˈeɪbəl/',us:'/ˈeɪbəl/',vi:'có năng lực',st:'Able',ex:'She is an able manager.',exVi:'Cô ấy là một nhà quản lý có năng lực.'},
+    {w:'gifted',gb:'/ˈɡɪftɪd/',us:'/ˈɡɪftɪd/',vi:'có năng khiếu, tài năng bẩm sinh',st:'GIFted',ex:'He is a gifted musician.',exVi:'Anh ấy là một nhạc sĩ có năng khiếu.'},
+    {w:'talented',gb:'/ˈtæləntɪd/',us:'/ˈtæləntɪd/',vi:'tài năng',st:'TALented',ex:'She is a talented writer.',exVi:'Cô ấy là một nhà văn tài năng.'},
+    {w:'brainy',gb:'/ˈbreɪni/',us:'/ˈbreɪni/',vi:'rất thông minh, giỏi trí tuệ (thân mật)',st:'BRAINy',ex:'My sister is really brainy.',exVi:'Chị tôi rất thông minh.'}
+   ]},
+ { title:'2. Lacking ability – Thiếu khả năng trí tuệ',
+   note:`Lưu ý khi giảng dạy: Không nên dùng những từ trên để đánh giá trực tiếp người khác trong giao tiếp lịch sự. Có thể thay bằng cách diễn đạt nhẹ nhàng hơn, chẳng hạn That wasn’t a very sensible decision (Đó không phải là một quyết định sáng suốt).`,
+   items:[
+    {w:'stupid',gb:'/ˈstjuːpɪd/',us:'/ˈstuːpɪd/',vi:'ngu ngốc',st:'STUpid',note:'Khá mạnh, dễ gây xúc phạm'},
+    {w:'foolish',gb:'/ˈfuːlɪʃ/',us:'/ˈfuːlɪʃ/',vi:'dại dột, thiếu khôn ngoan',st:'FOOlish',note:'Thường nhấn mạnh hành động hoặc quyết định'},
+    {w:'simple',gb:'/ˈsɪmpəl/',us:'/ˈsɪmpəl/',vi:'chậm hiểu, đơn giản',st:'SIMple',note:'Có thể mang tính xúc phạm khi nói về trí tuệ'},
+    {w:'silly',gb:'/ˈsɪli/',us:'/ˈsɪli/',vi:'ngớ ngẩn, ngốc nghếch',st:'SIlly',note:'Thường nhẹ hơn stupid'},
+    {w:'brainless',gb:'/ˈbreɪnləs/',us:'/ˈbreɪnləs/',vi:'đầu óc rỗng tuếch',st:'BRAINless',note:'Xúc phạm'},
+    {w:'daft',gb:'/dɑːft/',us:'/dæft/',vi:'ngốc nghếch',st:'DAFT',note:'Chủ yếu dùng trong tiếng Anh-Anh, thân mật'},
+    {w:'dumb',gb:'/dʌm/',us:'/dʌm/',vi:'ngu ngốc',st:'DUMB',note:'Có thể xúc phạm; nghĩa còn phụ thuộc ngữ cảnh'},
+    {w:'dim',gb:'/dɪm/',us:'/dɪm/',vi:'chậm hiểu',st:'DIM',note:'Thân mật, có thể xúc phạm'},
+    {w:'thick',gb:'/θɪk/',us:'/θɪk/',vi:'chậm hiểu',st:'THICK',note:'Thân mật, đặc biệt phổ biến trong tiếng Anh-Anh; có thể xúc phạm'}
+   ]},
+ { title:'3. Clever in a negative way – Khôn khéo theo hướng tiêu cực',
+   note:`Điểm ngữ nghĩa: Ba từ này miêu tả khả năng sử dụng sự khôn khéo để đạt mục đích, thường bằng cách lừa dối hoặc che giấu ý định.`,
+   items:[
+    {w:'cunning',gb:'/ˈkʌnɪŋ/',us:'/ˈkʌnɪŋ/',vi:'xảo quyệt, tinh ranh',st:'CUNning',ex:'He used a cunning plan to deceive them.',exVi:'Anh ta dùng một kế hoạch xảo quyệt để lừa họ.'},
+    {w:'crafty',gb:'/ˈkrɑːfti/',us:'/ˈkræfti/',vi:'ranh mãnh, nhiều mưu mẹo',st:'CRAFty',ex:'She is crafty and always finds a way to get what she wants.',exVi:'Cô ta ranh mãnh và luôn tìm ra cách để có được điều mình muốn.'},
+    {w:'sly',gb:'/slaɪ/',us:'/slaɪ/',vi:'lén lút, ranh mãnh',st:'SLY',ex:'He gave me a sly smile.',exVi:'Anh ta nở với tôi một nụ cười ranh mãnh.'}
+   ]}
+];
+
+const SEC_B=[
+ { title:'Attitudes towards life – Thái độ đối với cuộc sống',
+   note:`Phân biệt quan trọng
+
+* Sensible: biết suy nghĩ và đưa ra quyết định hợp lý.
+* Sensitive: dễ bị tác động về cảm xúc hoặc nhận biết tinh tế cảm xúc của người khác.
+* Practical: tập trung vào giải pháp có thể áp dụng trong thực tế.
+* Down-to-earth: thực tế, không phô trương hoặc xa rời thực tế.
+
+Ví dụ đối chiếu:
+
+Linh is sensible enough to plan her budget carefully.
+
+Linh đủ khôn ngoan để lên kế hoạch chi tiêu cẩn thận.
+
+Linh is sensitive and gets upset when people criticise her.
+
+Linh là người nhạy cảm và buồn khi bị người khác chỉ trích.`,
+   items:[
+    {w:'pessimistic',gb:'/ˌpesɪˈmɪstɪk/',us:'/ˌpesɪˈmɪstɪk/',vi:'bi quan',st:'pessiMIStic',ex:'He is pessimistic about the future.',exVi:'Anh ấy bi quan về tương lai.'},
+    {w:'optimistic',gb:'/ˌɒptɪˈmɪstɪk/',us:'/ˌɑːptɪˈmɪstɪk/',vi:'lạc quan',st:'optiMIStic',ex:'She remains optimistic despite the difficulties.',exVi:'Cô ấy vẫn lạc quan bất chấp khó khăn.'},
+    {w:'extroverted',gb:'/ˈekstrəvɜːtɪd/',us:'/ˈekstrəvɜːrtɪd/',vi:'hướng ngoại',st:'EXTROverted',ex:'He is extroverted and enjoys meeting new people.',exVi:'Anh ấy hướng ngoại và thích gặp gỡ người mới.'},
+    {w:'introverted',gb:'/ˈɪntrəvɜːtɪd/',us:'/ˈɪntrəvɜːrtɪd/',vi:'hướng nội',st:'INTROverted',ex:'She is introverted and enjoys spending time alone.',exVi:'Cô ấy hướng nội và thích dành thời gian một mình.'},
+    {w:'tense',gb:'/tens/',us:'/tens/',vi:'căng thẳng',st:'TENSE',ex:'I feel tense before an exam.',exVi:'Tôi cảm thấy căng thẳng trước kỳ thi.'},
+    {w:'wound up',gb:'/ˌwaʊnd ˈʌp/',us:'/ˌwaʊnd ˈʌp/',vi:'căng thẳng, bực bội',st:'wound UP',ex:'He gets wound up when he is under pressure.',exVi:'Anh ấy trở nên căng thẳng, bực bội khi chịu áp lực.'},
+    {w:'stressed out',gb:'/ˌstrest ˈaʊt/',us:'/ˌstrest ˈaʊt/',vi:'căng thẳng quá mức',st:'stressed OUT',ex:"I'm stressed out because of my workload.",exVi:'Tôi căng thẳng quá mức vì khối lượng công việc.'},
+    {w:'relaxed',gb:'/rɪˈlækst/',us:'/rɪˈlækst/',vi:'thư giãn, thoải mái',st:'reLAXED',ex:'She feels relaxed after a hot bath.',exVi:'Cô ấy cảm thấy thư giãn sau khi tắm nước nóng.'},
+    {w:'sensible',gb:'/ˈsensəbəl/',us:'/ˈsensəbəl/',vi:'biết suy xét, khôn ngoan',st:'SENsible',ex:'It was sensible to save some money.',exVi:'Việc tiết kiệm một ít tiền là khôn ngoan.'},
+    {w:'practical',gb:'/ˈpræktɪkəl/',us:'/ˈpræktɪkəl/',vi:'thực tế, thiết thực',st:'PRACtical',ex:'He is practical and solves problems efficiently.',exVi:'Anh ấy thực tế và giải quyết vấn đề hiệu quả.'},
+    {w:'down-to-earth',gb:'/ˌdaʊn tə ˈɜːθ/',us:'/ˌdaʊn tə ˈɜːrθ/',vi:'thực tế, giản dị',st:'down-to-EARTH',ex:'She is down-to-earth and easy to talk to.',exVi:'Cô ấy thực tế, giản dị và dễ nói chuyện.'},
+    {w:'sensitive',gb:'/ˈsensətɪv/',us:'/ˈsensətɪv/',vi:'nhạy cảm',st:'SENsitive',ex:'He is sensitive to criticism.',exVi:'Anh ấy nhạy cảm với những lời chỉ trích.'},
+    {w:'upset',gb:'/ʌpˈset/',us:'/ʌpˈset/',vi:'buồn bã, khó chịu',st:'upSET',ex:'She was upset by his comments.',exVi:'Cô ấy buồn bã vì những lời nhận xét của anh ta.'},
+    {w:'worked-up',gb:'/ˌwɜːkt ˈʌp/',us:'/ˌwɜːrkt ˈʌp/',vi:'kích động, bực bội',st:'worked-UP',ex:"Don't get worked-up over a small mistake.",exVi:'Đừng bực bội vì một lỗi nhỏ.'}
+   ]}
+];
+
+const SEC_C=[
+ { title:'1. Enjoying other people’s company – Thích giao tiếp và ở bên người khác',
+   note:'',
+   items:[
+    {w:'sociable',gb:'/ˈsəʊʃəbəl/',us:'/ˈsoʊʃəbəl/',vi:'hòa đồng, thích giao tiếp',st:'SOciable',ex:'She is sociable and makes friends easily.',exVi:'Cô ấy hòa đồng và dễ kết bạn.'},
+    {w:'gregarious',gb:'/ɡrɪˈɡeəriəs/',us:'/ɡrɪˈɡeriəs/',vi:'thích tụ tập, thích giao du',st:'greGARious',ex:'He is naturally gregarious.',exVi:'Anh ấy vốn thích giao du, tụ tập.'}
+   ]},
+ { title:'2. Disagreeing with others – Hay bất đồng với người khác',
+   note:'',
+   items:[
+    {w:'quarrelsome',gb:'/ˈkwɒrəlsəm/',us:'/ˈkwɔːrəlsəm/',vi:'hay gây gổ, thích cãi vã',st:'QUARrelsome',ex:'He is quarrelsome and often starts arguments.',exVi:'Anh ta hay gây gổ và thường khơi mào tranh cãi.'},
+    {w:'argumentative',gb:'/ˌɑːɡjuˈmentətɪv/',us:'/ˌɑːrɡjuˈmentətɪv/',vi:'hay tranh cãi, thích phản bác',st:'arguMENtative',ex:'She becomes argumentative when discussing politics.',exVi:'Cô ấy trở nên hay tranh cãi khi bàn về chính trị.'}
+   ]},
+ { title:'3. Taking pleasure in others’ pain – Thích thú trước nỗi đau của người khác',
+   note:'Sadistic mạnh hơn cruel, thường ám chỉ sự thích thú khi gây ra đau đớn hoặc đau khổ cho người khác.',
+   items:[
+    {w:'cruel',gb:'/ˈkruːəl/',us:'/ˈkruːəl/',vi:'độc ác, tàn nhẫn',st:'CRUel',ex:'It was cruel to laugh at his mistake.',exVi:'Thật tàn nhẫn khi cười nhạo lỗi của anh ấy.'},
+    {w:'sadistic',gb:'/səˈdɪstɪk/',us:'/səˈdɪstɪk/',vi:'có khuynh hướng thích làm người khác đau khổ',st:'saDIStic',ex:'His behaviour was sadistic.',exVi:'Hành vi của hắn mang tính thích thú gây đau khổ cho người khác.'}
+   ]},
+ { title:'4. Relaxed in attitude – Có thái độ thoải mái, bình tĩnh',
+   note:'',
+   items:[
+    {w:'easy-going',gb:'/ˌiːzi ˈɡəʊɪŋ/',us:'/ˌiːzi ˈɡoʊɪŋ/',vi:'dễ tính, thoải mái',st:'easy-GOing',ex:'My teacher is easy-going and friendly.',exVi:'Giáo viên của tôi dễ tính và thân thiện.'},
+    {w:'even-tempered',gb:'/ˌiːvən ˈtempəd/',us:'/ˌiːvən ˈtempərd/',vi:'điềm đạm, ít nóng giận',st:'even-TEMpered',ex:'She is even-tempered and rarely gets angry.',exVi:'Cô ấy điềm đạm và hiếm khi nổi giận.'},
+    {w:'laid-back',gb:'/ˌleɪd ˈbæk/',us:'/ˌleɪd ˈbæk/',vi:'thư thái, không quá lo lắng',st:'laid-BACK',ex:'He has a laid-back attitude towards life.',exVi:'Anh ấy có thái độ thư thái với cuộc sống.'}
+   ]},
+ { title:'5. Not polite to others – Thiếu lịch sự',
+   note:'',
+   items:[
+    {w:'impolite',gb:'/ˌɪmpəˈlaɪt/',us:'/ˌɪmpəˈlaɪt/',vi:'bất lịch sự',st:'impoLITE',ex:'It is impolite to interrupt people.',exVi:'Thật bất lịch sự khi ngắt lời người khác.'},
+    {w:'rude',gb:'/ruːd/',us:'/ruːd/',vi:'thô lỗ',st:'RUDE',ex:'He was rude to the waiter.',exVi:'Anh ta thô lỗ với người phục vụ.'},
+    {w:'ill-mannered',gb:'/ˌɪl ˈmænəd/',us:'/ˌɪl ˈmænərd/',vi:'thiếu lễ độ, thiếu phép tắc',st:'ill-MANnered',ex:'The child was badly behaved and ill-mannered.',exVi:'Đứa trẻ cư xử tệ và thiếu lễ độ.'},
+    {w:'discourteous',gb:'/dɪsˈkɜːtiəs/',us:'/dɪsˈkɜːrtiəs/',vi:'thiếu lịch sự, khiếm nhã',st:'disCOURteous',ex:'His response was discourteous.',exVi:'Câu trả lời của anh ta thật khiếm nhã.'}
+   ]},
+ { title:'6. Telling the truth and being dependable – Trung thực và đáng tin cậy',
+   note:`Phân biệt:
+
+* Honest: nói thật, không gian dối.
+* Trustworthy: xứng đáng được tin tưởng.
+* Reliable: có thể trông cậy để hoàn thành việc đã hứa.
+* Sincere: chân thành, không giả tạo.`,
+   items:[
+    {w:'honest',gb:'/ˈɒnɪst/',us:'/ˈɑːnɪst/',vi:'trung thực',st:'HONest',ex:'She is always honest with me.',exVi:'Cô ấy luôn trung thực với tôi.'},
+    {w:'trustworthy',gb:'/ˈtrʌstwɜːði/',us:'/ˈtrʌstwɜːrði/',vi:'đáng tin cậy',st:'TRUSTworthy',ex:'He is a trustworthy friend.',exVi:'Anh ấy là một người bạn đáng tin cậy.'},
+    {w:'reliable',gb:'/rɪˈlaɪəbəl/',us:'/rɪˈlaɪəbəl/',vi:'đáng tin, có thể trông cậy',st:'reLIable',ex:'She is reliable and always arrives on time.',exVi:'Cô ấy đáng tin và luôn đến đúng giờ.'},
+    {w:'sincere',gb:'/sɪnˈsɪə(r)/',us:'/sɪnˈsɪr/',vi:'chân thành',st:'sinCERE',ex:'He gave me a sincere apology.',exVi:'Anh ấy đã xin lỗi tôi một cách chân thành.'}
+   ]},
+ { title:'7. Feeling unhappy about what others have – Ghen tị',
+   note:'Trong cách dùng thông thường, hai từ có thể gần nghĩa nhau. Jealous cũng thường được dùng khi một người sợ mất đi tình cảm hoặc sự quan tâm của người khác.',
+   items:[
+    {w:'jealous',gb:'/ˈdʒeləs/',us:'/ˈdʒeləs/',vi:'ghen tuông; ghen tị',st:'JELous',ex:'He was jealous of his friend’s success.',exVi:'Anh ấy ghen tị với thành công của bạn mình.'},
+    {w:'envious',gb:'/ˈenviəs/',us:'/ˈenviəs/',vi:'ghen tị, thèm muốn điều người khác có',st:'ENvious',ex:"I'm envious of her excellent English skills.",exVi:'Tôi ghen tị với kỹ năng tiếng Anh xuất sắc của cô ấy.'}
+   ]}
+];
+
+/* ---------- Section D ---------- */
+const SEC_D_INTRO='Thành ngữ này có nghĩa là điều một người thích hoặc đánh giá cao có thể không được người khác yêu thích. Một tính cách có thể được nhìn nhận tích cực hoặc tiêu cực tùy hoàn cảnh và quan điểm.';
+const D_PAIRS=[
+ {p:'determined',pvi:'quyết tâm',n:'obstinate',nvi:'cố chấp'},
+ {p:'thrifty',pvi:'tiết kiệm',n:'stingy',nvi:'keo kiệt'},
+ {p:'economical',pvi:'tiết kiệm, kinh tế',n:'mean',nvi:'keo kiệt'},
+ {p:'self-assured',pvi:'tự tin',n:'self-important',nvi:'tự cho mình quan trọng'},
+ {p:'confident',pvi:'tự tin',n:'arrogant',nvi:'kiêu ngạo'},
+ {p:'unconventional',pvi:'không theo lối thông thường',n:'eccentric',nvi:'lập dị'},
+ {p:'original',pvi:'độc đáo, sáng tạo',n:'odd',nvi:'kỳ quặc'},
+ {p:'frank',pvi:'thẳng thắn',n:'blunt',nvi:'thẳng thừng, thiếu tế nhị'},
+ {p:'direct',pvi:'trực tiếp, thẳng thắn',n:'brusque',nvi:'cộc lốc'},
+ {p:'open',pvi:'cởi mở',n:'curt',nvi:'cụt lủn, lạnh lùng'},
+ {p:'broad-minded',pvi:'có tư tưởng cởi mở',n:'unprincipled',nvi:'không có nguyên tắc đạo đức'},
+ {p:'enquiring',pvi:'ham tìm hiểu',n:'inquisitive',nvi:'tò mò quá mức'},
+ {p:'generous',pvi:'hào phóng',n:'extravagant',nvi:'tiêu xài hoang phí'},
+ {p:'innocent',pvi:'ngây thơ, vô tội',n:'naive',nvi:'ngây thơ, dễ bị lợi dụng'},
+ {p:'ambitious',pvi:'có tham vọng',n:'pushy',nvi:'quá thúc ép, lấn lướt'},
+ {p:'assertive',pvi:'quyết đoán',n:'aggressive',nvi:'hung hăng'},
+ {p:null,pvi:'',n:'bossy',nvi:'thích sai khiến người khác'},
+ {p:null,pvi:'',n:'stubborn',nvi:'bướng bỉnh'},
+ {p:null,pvi:'',n:'pig-headed',nvi:'ngoan cố'},
+ {p:null,pvi:'',n:'tight-fisted',nvi:'rất keo kiệt'},
+ {p:null,pvi:'',n:'miserly',nvi:'bủn xỉn'},
+ {p:null,pvi:'',n:'full of yourself',nvi:'tự mãn, tự cao'},
+ {p:null,pvi:'',n:'peculiar',nvi:'kỳ lạ'},
+ {p:null,pvi:'',n:'weird',nvi:'kỳ quặc'},
+ {p:null,pvi:'',n:'permissive',nvi:'quá dễ dãi'},
+ {p:null,pvi:'',n:'nosy',nvi:'tọc mạch'}
+];
+
+const D_IPA={
+ 'determined':['/dɪˈtɜːmɪnd/','/dɪˈtɜːrmɪnd/'],
+ 'obstinate':['/ˈɒbstɪnət/','/ˈɑːbstɪnət/'],
+ 'thrifty':['/ˈθrɪfti/','/ˈθrɪfti/'],
+ 'stingy':['/ˈstɪndʒi/','/ˈstɪndʒi/'],
+ 'economical':['/ˌiːkəˈnɒmɪkəl/','/ˌiːkəˈnɑːmɪkəl/'],
+ 'mean':['/miːn/','/miːn/'],
+ 'self-assured':['/ˌself əˈʃʊəd/','/ˌself əˈʃʊrd/'],
+ 'self-important':['/ˌself ɪmˈpɔːtənt/','/ˌself ɪmˈpɔːrtnt/'],
+ 'confident':['/ˈkɒnfɪdənt/','/ˈkɑːnfɪdənt/'],
+ 'arrogant':['/ˈærəɡənt/','/ˈærəɡənt/'],
+ 'unconventional':['/ˌʌnkənˈvenʃənəl/','/ˌʌnkənˈvenʃənəl/'],
+ 'eccentric':['/ɪkˈsentrɪk/','/ɪkˈsentrɪk/'],
+ 'original':['/əˈrɪdʒənəl/','/əˈrɪdʒənəl/'],
+ 'odd':['/ɒd/','/ɑːd/'],
+ 'frank':['/fræŋk/','/fræŋk/'],
+ 'blunt':['/blʌnt/','/blʌnt/'],
+ 'direct':['/dəˈrekt/','/dəˈrekt/'],
+ 'brusque':['/bruːsk/','/brʌsk/'],
+ 'open':['/ˈəʊpən/','/ˈoʊpən/'],
+ 'curt':['/kɜːt/','/kɜːrt/'],
+ 'broad-minded':['/ˌbrɔːd ˈmaɪndɪd/','/ˌbrɔːd ˈmaɪndɪd/'],
+ 'unprincipled':['/ʌnˈprɪnsəpəld/','/ʌnˈprɪnsəpəld/'],
+ 'enquiring':['/ɪnˈkwaɪərɪŋ/','/ɪnˈkwaɪərɪŋ/'],
+ 'inquisitive':['/ɪnˈkwɪzətɪv/','/ɪnˈkwɪzətɪv/'],
+ 'generous':['/ˈdʒenərəs/','/ˈdʒenərəs/'],
+ 'extravagant':['/ɪkˈstrævəɡənt/','/ɪkˈstrævəɡənt/'],
+ 'innocent':['/ˈɪnəsənt/','/ˈɪnəsənt/'],
+ 'naive':['/naɪˈiːv/','/naɪˈiːv/'],
+ 'ambitious':['/æmˈbɪʃəs/','/æmˈbɪʃəs/'],
+ 'pushy':['/ˈpʊʃi/','/ˈpʊʃi/'],
+ 'assertive':['/əˈsɜːtɪv/','/əˈsɜːrtɪv/'],
+ 'aggressive':['/əˈɡresɪv/','/əˈɡresɪv/'],
+ 'bossy':['/ˈbɒsi/','/ˈbɔːsi/'],
+ 'stubborn':['/ˈstʌbən/','/ˈstʌbərn/'],
+ 'pig-headed':['/ˌpɪɡ ˈhedɪd/','/ˌpɪɡ ˈhedɪd/'],
+ 'tight-fisted':['/ˌtaɪt ˈfɪstɪd/','/ˌtaɪt ˈfɪstɪd/'],
+ 'miserly':['/ˈmaɪzəli/','/ˈmaɪzərli/'],
+ 'full of yourself':['/ˌfʊl əv jɔːˈself/','/ˌfʊl əv jʊrˈself/'],
+ 'peculiar':['/pɪˈkjuːliə(r)/','/pɪˈkjuːliər/'],
+ 'weird':['/wɪəd/','/wɪrd/'],
+ 'permissive':['/pəˈmɪsɪv/','/pərˈmɪsɪv/'],
+ 'nosy':['/ˈnəʊzi/','/ˈnoʊzi/']
+};
+
+const D_STRESS={
+ 'determined':'deTERmined','obstinate':'OBStinate','thrifty':'THRIFty','stingy':'STINGy',
+ 'economical':'ecoNOmical','mean':'MEAN','self-assured':'self-asSURED','self-important':'self-imPORtant',
+ 'confident':'CONfident','arrogant':'ARrogant','unconventional':'unconVENtional','eccentric':'ecCENtric',
+ 'original':'oRIGinal','odd':'ODD','frank':'FRANK','blunt':'BLUNT','direct':'diRECT','brusque':'BRUSQUE',
+ 'open':'Open','curt':'CURT','broad-minded':'broad-MINded','unprincipled':'unPRINcipled',
+ 'enquiring':'enQUIRing','inquisitive':'inQUISitive','generous':'GENerous','extravagant':'exTRAvagant',
+ 'innocent':'INNocent','naive':'naIVE','ambitious':'amBITious','pushy':'PUSH-y','assertive':'asSERtive',
+ 'aggressive':'agGRESSive','bossy':'BOSS-y','stubborn':'STUBborn','pig-headed':'pig-HEADed',
+ 'tight-fisted':'tight-FISted','miserly':'MISerly','full of yourself':'full of yourSELF',
+ 'peculiar':'peCUliar','weird':'WEIRD','permissive':'perMISSive','nosy':'NOsy'
+};
+
+/* ---------- helpers to collect all vocabulary ---------- */
+function allVocab(){
+  const out=[];
+  [['A',SEC_A],['B',SEC_B],['C',SEC_C]].forEach(function(sec){
+    sec[1].forEach(function(g){
+      g.items.forEach(function(it){
+        out.push({w:it.w, gb:it.gb, us:it.us, vi:it.vi, st:it.st||'', section:sec[0], note:it.note||'', ex:it.ex||'', exVi:it.exVi||''});
+      });
+    });
+  });
+  D_PAIRS.forEach(function(p){
+    if(p.p){
+      const ipa=D_IPA[p.p]||['',''];
+      out.push({w:p.p, gb:ipa[0], us:ipa[1], vi:p.pvi, st:D_STRESS[p.p]||'', section:'D', note:'', ex:'', exVi:'', connotation:'positive'});
+    }
+    const ipa2=D_IPA[p.n]||['',''];
+    out.push({w:p.n, gb:ipa2[0], us:ipa2[1], vi:p.nvi, st:D_STRESS[p.n]||'', section:'D', note:'', ex:'', exVi:'', connotation:'negative'});
+  });
+  return out;
+}
+const VOCAB = allVocab();
+
+/* =========================================================
+   SPEECH SYNTHESIS (clearly-labelled fallback)
+   ========================================================= */
+let voices=[];
+function refreshVoices(){
+  if(!('speechSynthesis' in window)) return;
+  voices = window.speechSynthesis.getVoices() || [];
+  updateVoiceStatus();
+}
+function findVoice(lang){
+  if(!voices.length) return null;
+  let v = voices.filter(function(x){ return x.lang && x.lang.replace('_','-').toLowerCase()===lang.toLowerCase(); });
+  if(v.length) return v[0];
+  const short = lang.split('-')[0].toLowerCase();
+  v = voices.filter(function(x){ return x.lang && x.lang.toLowerCase().indexOf(short)===0; });
+  return v.length ? v[0] : null;
+}
+function updateVoiceStatus(){
+  const el=$('#voiceStatus'); if(!el) return;
+  if(!('speechSynthesis' in window)){
+    el.innerHTML='<span class="bad">Trình duyệt này không hỗ trợ Web Speech API. Không thể phát âm thanh.</span>';
+    return;
+  }
+  const gb=findVoice('en-GB'), us=findVoice('en-US');
+  el.innerHTML = 'Giọng en-GB: <b>'+(gb?esc(gb.name):'không có trên thiết bị')+'</b> · '+
+                 'Giọng en-US: <b>'+(us?esc(us.name):'không có trên thiết bị')+'</b>'+
+                 '<br><span class="small">Danh sách giọng phụ thuộc vào thiết bị và hệ điều hành. Đây là giải pháp thay thế, không phải bản ghi âm người bản ngữ.</span>';
+}
+if('speechSynthesis' in window){
+  refreshVoices();
+  window.speechSynthesis.onvoiceschanged = refreshVoices;
+  setTimeout(refreshVoices, 400);
+}
+
+function speak(text, opts){
+  opts = opts || {};
+  if(!('speechSynthesis' in window)){ toast('Trình duyệt không hỗ trợ phát âm thanh.'); return; }
+  const lang = opts.lang || state.accent;
+  const rate = (opts.rate!==undefined) ? opts.rate : (state.slow ? 0.62 : 0.95);
+  try{ window.speechSynthesis.cancel(); }catch(e){}
+  const u = new SpeechSynthesisUtterance(String(text));
+  u.lang = lang;
+  u.rate = rate;
+  u.pitch = 1;
+  const v = findVoice(lang);
+  if(v){ u.voice = v; }
+  else{
+    toast('Không tìm thấy giọng '+lang+' trên thiết bị. Đang dùng giọng mặc định — phát âm có thể không chuẩn.');
+  }
+  u.onerror = function(){ /* silent */ };
+  try{ window.speechSynthesis.speak(u); }catch(e){ toast('Không thể phát âm thanh trên thiết bị này.'); }
+  state.pronCount = (state.pronCount||0)+1;
+  saveState(); updateStats();
+  const pc=$('#pronCount'); if(pc) pc.textContent=state.pronCount;
+}
+
+/* =========================================================
+   RENDERERS
+   ========================================================= */
+function stressHtml(st){
+  if(!st) return '';
+  return st.replace(/[A-Z]{1,}/g, function(m){ return '<b class="stress">'+m.toLowerCase()+'</b>'; });
+}
+function fmtNote(t){
+  if(!t) return '';
+  const lines=t.split('\n');
+  let html='', inList=false;
+  lines.forEach(function(raw){
+    const line=raw.trim();
+    if(!line){ if(inList){html+='</ul>';inList=false;} return; }
+    if(line.indexOf('* ')===0){
+      if(!inList){ html+='<ul class="notes">'; inList=true; }
+      html+='<li>'+esc(line.slice(2))+'</li>';
+    }else{
+      if(inList){ html+='</ul>'; inList=false; }
+      html+='<p>'+esc(line)+'</p>';
+    }
+  });
+  if(inList) html+='</ul>';
+  return html;
+}
+function vocabCard(it){
+  const wAttr=esc(it.w);
+  let h='<div class="vcard">';
+  h+='<div class="vhead"><span class="word">'+esc(it.w)+'</span><span class="pos">adj</span>';
+  h+='<button class="play" data-say="'+wAttr+'" aria-label="Nghe từ '+wAttr+'">▶ Nghe</button></div>';
+  h+='<div class="ipa"><span class="tag">GB</span>'+esc(it.gb||'—')+' &nbsp; <span class="tag">US</span>'+esc(it.us||'—')+'</div>';
+  if(it.st) h+='<div class="small">Trọng âm: '+stressHtml(it.st)+' · ~'+estimateSyllables(it.gb)+' âm tiết</div>';
+  h+='<div class="vi">'+esc(it.vi)+'</div>';
+  if(it.note) h+='<div class="note-warn">'+esc(it.note)+'</div>';
+  if(it.ex){
+    h+='<div class="ex">“'+esc(it.ex)+'”';
+    h+=' <button class="play" data-saysentence="'+esc(it.ex)+'">▶ câu</button>';
+    if(it.exVi) h+='<span class="ex-vi">'+esc(it.exVi)+'</span>';
+    h+='</div>';
+  }
+  h+='</div>';
+  return h;
+}
+function estimateSyllables(ipa){
+  if(!ipa) return '?';
+  const clean=ipa.replace(/[\/ˈˌː\.\(\)]/g,'');
+  const m=clean.match(/eɪ|aɪ|ɔɪ|əʊ|oʊ|aʊ|ɪə|eə|ʊə|[iɪeæɑɒɔʊuʌəɜɐ]/g);
+  return m?m.length:'?';
+}
+function renderGroups(containerId, groups){
+  const box=document.getElementById(containerId);
+  let h='';
+  groups.forEach(function(g){
+    h+='<h3>'+esc(g.title)+'</h3>';
+    if(g.note) h+='<div class="group-note">'+fmtNote(g.note)+'</div>';
+    h+='<div class="vgrid">';
+    g.items.forEach(function(it){ h+=vocabCard(it); });
+    h+='</div>';
+  });
+  box.innerHTML=h;
+}
+renderGroups('sec-a-body', SEC_A);
+renderGroups('sec-b-body', SEC_B);
+renderGroups('sec-c-body', SEC_C);
+
+/* ---------- Section D table ---------- */
+(function renderD(){
+  const t=$('#d-table');
+  let h='<thead><tr><th style="width:50%">Positive associations – Sắc thái tích cực</th><th style="width:50%">Negative associations – Sắc thái tiêu cực</th></tr></thead><tbody>';
+  D_PAIRS.forEach(function(p){
+    const pIpa = p.p ? (D_IPA[p.p]||['','']) : null;
+    const nIpa = D_IPA[p.n]||['',''];
+    h+='<tr>';
+    h+='<td class="pos">'+(p.p? '<b>'+esc(p.p)+'</b> – '+esc(p.pvi)+'<br><span class="ipa">'+esc(pIpa[0])+' · '+esc(pIpa[1])+'</span> <button class="play" data-say="'+esc(p.p)+'">▶</button>' : '—')+'</td>';
+    h+='<td class="neg"><b>'+esc(p.n)+'</b> – '+esc(p.nvi)+'<br><span class="ipa">'+esc(nIpa[0])+' · '+esc(nIpa[1])+'</span> <button class="play" data-say="'+esc(p.n)+'">▶</button></td>';
+    h+='</tr>';
+  });
+  h+='</tbody>';
+  t.innerHTML=h;
+})();
+
+/* ---------- Pronunciation table ---------- */
+function renderPronTable(filter){
+  const tbody=$('#pronTable tbody');
+  const f=(filter||'').toLowerCase().trim();
+  let h='';
+  VOCAB.forEach(function(v){
+    if(f && v.w.toLowerCase().indexOf(f)===-1 && v.vi.toLowerCase().indexOf(f)===-1) return;
+    const diff = v.gb && v.us && v.gb!==v.us;
+    h+='<tr>';
+    h+='<td><b>'+esc(v.w)+'</b></td>';
+    h+='<td'+(diff?' style="font-weight:700;color:#255a9e"':'')+'>'+esc(v.gb||'—')+'</td>';
+    h+='<td'+(diff?' style="font-weight:700;color:#255a9e"':'')+'>'+esc(v.us||'—')+'</td>';
+    h+='<td>'+esc(v.vi)+'</td>';
+    h+='<td>'+stressHtml(v.st)+'</td>';
+    h+='<td><button class="play" data-say="'+esc(v.w)+'" data-force="gb">GB</button> <button class="play" data-say="'+esc(v.w)+'" data-force="us">US</button></td>';
+    h+='</tr>';
+  });
+  tbody.innerHTML = h || '<tr><td colspan="6">Không tìm thấy từ phù hợp.</td></tr>';
+}
+renderPronTable('');
+$('#pronFilter').addEventListener('input', function(){ renderPronTable(this.value); });
+$('#pronCount').textContent = state.pronCount||0;
+
+/* ---------- Global play delegation ---------- */
+document.addEventListener('click', function(e){
+  const btn = e.target.closest('button[data-say], button[data-saysentence]');
+  if(!btn) return;
+  if(btn.hasAttribute('data-saysentence')){
+    speak(btn.getAttribute('data-saysentence'));
+    return;
+  }
+  const word=btn.getAttribute('data-say');
+  const force=btn.getAttribute('data-force');
+  let lang=state.accent;
+  if(force==='gb') lang='en-GB';
+  if(force==='us') lang='en-US';
+  speak(word,{lang:lang});
+});
+
+/* ---------- Accent controls ---------- */
+const accentSel=$('#accentSel');
+accentSel.value=state.accent;
+accentSel.addEventListener('change', function(){
+  state.accent=this.value; saveState(); toast('Đã chọn: '+(this.value==='en-GB'?'British English':'American English'));
+});
+const slowBox=$('#slowMode');
+slowBox.checked=!!state.slow;
+slowBox.addEventListener('change', function(){ state.slow=this.checked; saveState(); });
+$('#testVoiceBtn').addEventListener('click', function(){
+  updateVoiceStatus();
+  speak('This is a test of the pronunciation tool.', {lang:state.accent});
+});
+$('#pronReadAll').addEventListener('click', function(){
+  const list=VOCAB.slice(0,12);
+  let i=0;
+  (function next(){
+    if(i>=list.length) return;
+    speak(list[i].w, {lang:state.accent, rate:0.7});
+    i++;
+    setTimeout(next, 1400);
+  })();
+});
+
+/* =========================================================
+   NAVIGATION / STATS
+   ========================================================= */
+const sections=['sec-objectives','sec-a','sec-b','sec-c','sec-d','sec-pron','sec-ex','sec-extra','sec-source','sec-progress'];
+const sectionLabels={
+  'sec-objectives':'Learning objectives','sec-a':'A. Intellectual ability','sec-b':'B. Attitudes towards life',
+  'sec-c':'C. Attitudes towards other people','sec-d':'D. One person’s meat…','sec-pron':'Pronunciation laboratory',
+  'sec-ex':'Original exercises','sec-extra':'Additional Practice','sec-source':'Original Source','sec-progress':'Progress dashboard'
+};
+if('IntersectionObserver' in window){
+  const io=new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      if(en.isIntersecting){
+        const id=en.target.id;
+        $('#statSection').textContent=sectionLabels[id]||id;
+        $$('#nav a').forEach(function(a){ a.classList.toggle('active', a.getAttribute('href')==='#'+id); });
+      }
+    });
+  }, {rootMargin:'-90px 0px -70% 0px', threshold:0});
+  sections.forEach(function(id){ const el=document.getElementById(id); if(el) io.observe(el); });
+}
+
+const menuBtn=$('#menuBtn'), sidebar=$('#sidebar'), scrim=$('#scrim');
+function closeMenu(){ sidebar.classList.remove('open'); scrim.classList.remove('on'); menuBtn.setAttribute('aria-expanded','false'); }
+menuBtn.addEventListener('click', function(){
+  const open=sidebar.classList.toggle('open');
+  scrim.classList.toggle('on', open);
+  menuBtn.setAttribute('aria-expanded', open?'true':'false');
+});
+scrim.addEventListener('click', closeMenu);
+$$('#nav a').forEach(function(a){ a.addEventListener('click', function(){ if(window.innerWidth<=960) closeMenu(); }); });
+
+function countReviewed(){
+  return Object.keys(state.flashcards||{}).filter(function(k){ return state.flashcards[k]; }).length;
+}
+function updateStats(){
+  let done=0;
+  TRACKED_SECTIONS.forEach(function(s){ if(state.sections[s]) done++; });
+  EXERCISE_KEYS.forEach(function(k){ if(state.exercises[k] && state.exercises[k].attempts>0) done++; });
+  EXTRA_KEYS.forEach(function(k){ if(state.extra[k] && state.extra[k].attempts>0) done++; });
+
+  const pct=Math.round(done/TOTAL_ACTIVITIES*100);
+  $('#statPercent').textContent=pct+'%';
+  $('#statBar').style.width=pct+'%';
+  $('#statDone').textContent=done+' / '+TOTAL_ACTIVITIES;
+
+  const rev=countReviewed();
+  $('#statVocab').textContent=rev+' / '+VOCAB.length;
+
+  const parts=[];
+  EXERCISE_KEYS.forEach(function(k){
+    const r=state.exercises[k];
+    if(r && r.attempts>0) parts.push(k+': '+r.best+'/'+r.total);
+  });
+  $('#statScores').textContent = parts.length ? parts.join(' · ') : '—';
+
+  $$('button[data-complete]').forEach(function(b){
+    const k=b.getAttribute('data-complete');
+    if(state.sections[k]){ b.textContent='✓ Đã hoàn thành'; b.disabled=true; }
+  });
+
+  renderProgressDashboard();
+  renderFlashProgress();
+}
+$$('button[data-complete]').forEach(function(b){
+  b.addEventListener('click', function(){
+    const k=this.getAttribute('data-complete');
+    state.sections[k]=true; saveState(); updateStats();
+    toast('Đã đánh dấu hoàn thành mục này.');
+  });
+});
+
+/* =========================================================
+   EXERCISE 8.1
+   ========================================================= */
+const EX81={
+  items:[
+    {id:1, word:'clever', answer:'f'},
+    {id:2, word:'extroverted', answer:'a'},
+    {id:3, word:'rude', answer:'c'},
+    {id:4, word:'cruel', answer:'e'},
+    {id:5, word:'generous', answer:'b'},
+    {id:6, word:'unsociable', answer:'d'}
+  ],
+  choices:{a:'introverted', b:'tight-fisted', c:'courteous', d:'gregarious', e:'kind-hearted', f:'dim'},
+  explain:{
+    '1':'clever (thông minh, khéo léo) ↔ dim (chậm hiểu).',
+    '2':'extroverted (hướng ngoại) ↔ introverted (hướng nội).',
+    '3':'rude (thô lỗ) ↔ courteous (lịch sự).',
+    '4':'cruel (độc ác) ↔ kind-hearted (tốt bụng).',
+    '5':'generous (hào phóng) ↔ tight-fisted (keo kiệt).',
+    '6':'unsociable (không thích giao tiếp) ↔ gregarious (thích giao du, tụ tập).'
+  }
+};
+function renderEx81(){
+  let h='';
+  EX81.items.forEach(function(it){
+    h+='<div class="row"><span class="qtext">'+it.id+'. <b>'+esc(it.word)+'</b></span>';
+    h+='<select data-ex81="'+it.id+'" aria-label="Chọn từ trái nghĩa cho '+esc(it.word)+'">';
+    h+='<option value="">— chọn —</option>';
+    Object.keys(EX81.choices).forEach(function(k){
+      h+='<option value="'+k+'">'+k+'. '+esc(EX81.choices[k])+'</option>';
+    });
+    h+='</select><span class="fb" id="ex81fb-'+it.id+'"></span></div>';
+  });
+  $('#ex81-body').innerHTML=h;
+  $('#ex81-result').innerHTML='';
+}
+renderEx81();
+$('#ex81-submit').addEventListener('click', function(){
+  let score=0, html='';
+  EX81.items.forEach(function(it){
+    const sel=$('select[data-ex81="'+it.id+'"]');
+    const val=sel.value;
+    const fb=document.getElementById('ex81fb-'+it.id);
+    if(val===it.answer){ score++; fb.innerHTML='<span class="ok">✓ Đúng</span>'; }
+    else{
+      fb.innerHTML='<span class="bad">✗ Sai — đáp án: '+it.answer+'. '+esc(EX81.choices[it.answer])+'</span>';
+    }
+    html+='<div class="small"><b>'+it.id+'. '+esc(it.word)+' – '+it.answer+'. '+esc(EX81.choices[it.answer])+'</b> '+esc(EX81.explain[String(it.id)])+'</div>';
+  });
+  const res=$('#ex81-result');
+  res.innerHTML='<div class="result '+(score>=4?'pass':'fail')+'">Điểm: '+score+' / 6</div><div class="model-box">'+html+'</div>';
+  recordAttempt('exercises','8.1',score,6);
+});
+$('#ex81-reset').addEventListener('click', renderEx81);
+
+/* =========================================================
+   EXERCISE 8.2
+   ========================================================= */
+const EX82=[
+  {s:"Molly's usually frank.", imp:'positive', model:"Molly is usually blunt.", why:"frank (thẳng thắn) mang sắc thái tích cực; blunt (thẳng thừng, thiếu tế nhị) mang sắc thái tiêu cực."},
+  {s:"Grace is quite broad-minded.", imp:'positive', model:"Grace is quite narrow-minded.", why:"broad-minded (cởi mở) tích cực; narrow-minded (hẹp hòi) tiêu cực."},
+  {s:"Sam can be aggressive.", imp:'negative', model:"Sam can be assertive.", why:"aggressive (hung hăng) tiêu cực; assertive (quyết đoán, biết bảo vệ quan điểm) tích cực."},
+  {s:"Nico's quite bossy.", imp:'negative', model:"Nico is quite assertive.", why:"bossy (thích sai khiến) tiêu cực; assertive (quyết đoán) tích cực. Lưu ý: đây không phải cặp trái nghĩa tuyệt đối."},
+  {s:"I find Marcus self-important.", imp:'negative', model:"I find Marcus self-assured.", why:"self-important (tự cho mình quan trọng) tiêu cực; self-assured (tự tin) tích cực."},
+  {s:"Don't you think James is nosy?", imp:'negative', model:"Don't you think James is inquisitive?", why:"nosy (tọc mạch chuyện người khác) tiêu cực; inquisitive (ham tìm hiểu) tích cực hơn."},
+  {s:"Freya is very original.", imp:'positive', model:"Freya is very eccentric.", why:"original (độc đáo, sáng tạo) tích cực; eccentric (lập dị) tiêu cực."}
+];
+function renderEx82(){
+  let h='';
+  EX82.forEach(function(it,i){
+    h+='<div class="person-box">';
+    h+='<p><b>'+(i+1)+'. '+esc(it.s)+'</b></p>';
+    h+='<div class="radio-line">';
+    h+='<label><input type="radio" name="ex82imp-'+i+'" value="positive"> Positive impression</label>';
+    h+='<label><input type="radio" name="ex82imp-'+i+'" value="negative"> Negative impression</label>';
+    h+='</div>';
+    h+='<label for="ex82rew-'+i+'" class="small">Viết lại câu để thể hiện sắc thái ngược lại:</label>';
+    h+='<input type="text" id="ex82rew-'+i+'" placeholder="Viết câu của bạn…">';
+    h+='<div style="margin-top:8px"><button class="btn ghost small-btn" data-reveal82="'+i+'">Xem đáp án mẫu</button></div>';
+    h+='<div id="ex82model-'+i+'"></div>';
+    h+='<div class="fb" id="ex82fb-'+i+'"></div>';
+    h+='</div>';
+  });
+  $('#ex82-body').innerHTML=h;
+  $('#ex82-result').innerHTML='';
+}
+renderEx82();
+document.addEventListener('click', function(e){
+  const b=e.target.closest('[data-reveal82]');
+  if(!b) return;
+  const i=+b.getAttribute('data-reveal82');
+  const it=EX82[i];
+  document.getElementById('ex82model-'+i).innerHTML=
+    '<div class="model-box"><b>Model answer:</b> '+esc(it.model)+'<br><span class="small">'+esc(it.why)+'</span></div>';
+});
+$('#ex82-submit').addEventListener('click', function(){
+  let score=0;
+  EX82.forEach(function(it,i){
+    const sel=document.querySelector('input[name="ex82imp-'+i+'"]:checked');
+    const fb=document.getElementById('ex82fb-'+i);
+    if(sel && sel.value===it.imp){ score++; fb.innerHTML='<span class="ok">✓ Đúng sắc thái ('+it.imp+')</span>'; }
+    else if(!sel){ fb.innerHTML='<span class="bad">Chưa chọn sắc thái. Đáp án: '+it.imp+'</span>'; }
+    else { fb.innerHTML='<span class="bad">✗ Sai. Đáp án: '+it.imp+'</span>'; }
+  });
+  $('#ex82-result').innerHTML=
+    '<div class="result '+(score>=5?'pass':'fail')+'">Điểm phần nhận diện sắc thái: '+score+' / 7</div>'+
+    '<div class="model-box"><b>Lưu ý:</b> Phần viết lại câu được tự đánh giá. Hãy so sánh câu của bạn với đáp án mẫu — nhiều cách diễn đạt khác vẫn đúng nếu giữ được nghĩa và ngữ pháp. Ứng dụng không chấm tự động phần viết tự do để tránh đánh giá sai.</div>';
+  recordAttempt('exercises','8.2',score,7);
+});
+$('#ex82-reset').addEventListener('click', renderEx82);
+
+/* =========================================================
+   EXERCISE 8.3
+   ========================================================= */
+const EX83_PAIRS=[
+  ['brainless','silly'],
+  ['curt','brusque'],
+  ['gifted','talented'],
+  ['rude','impolite'],
+  ['tense','wound up'],
+  ['direct','frank'],
+  ['honest','trustworthy'],
+  ['sensible','down-to-earth'],
+  ['tight-fisted','miserly'],
+  ['crafty','cunning']
+];
+const EX83_COLS={
+  A:['brainless','curt','gifted','rude','tense'],
+  B:['brusque','direct','honest','sensible','tight-fisted'],
+  C:['crafty','down-to-earth','impolite','silly','trustworthy'],
+  D:['cunning','frank','miserly','talented','wound up']
+};
+let ex83Selected=null;
+let ex83Pairs=[];
+function renderEx83(){
+  ex83Selected=null;
+  ex83Pairs=[{a:'brainless',b:'silly',locked:true,correct:true}];
+  let h='';
+  ['A','B','C','D'].forEach(function(col){
+    h+='<div class="columnlabel">Column '+col+'</div><div class="chips">';
+    EX83_COLS[col].forEach(function(w){
+      const used = ex83Pairs.some(function(p){ return p.a===w||p.b===w; });
+      h+='<button class="chip'+(used?' locked':'')+'" data-ex83="'+esc(w)+'"'+(used?' disabled':'')+'>'+esc(w)+'</button>';
+    });
+    h+='</div>';
+  });
+  $('#ex83-board').innerHTML=h;
+  renderEx83Pairs();
+  $('#ex83-result').innerHTML='';
+}
+function renderEx83Pairs(){
+  const box=$('#ex83-pairs');
+  if(!ex83Pairs.length){ box.innerHTML='<span class="small">Chưa có cặp nào.</span>'; return; }
+  let h='';
+  ex83Pairs.forEach(function(p,i){
+    h+='<span class="pairitem'+(p.locked?'':(p.correct===true?' correct':(p.correct===false?' wrong':'')))+'">'+
+       esc(p.a)+' – '+esc(p.b)+
+       (p.locked?' <span class="small">(mẫu)</span>':' <button data-remove83="'+i+'" aria-label="Xoá cặp">✕</button>')+
+       '</span>';
+  });
+  box.innerHTML=h;
+}
+$('#ex83-board').addEventListener('click', function(e){
+  const chip=e.target.closest('button[data-ex83]');
+  if(!chip || chip.disabled) return;
+  const w=chip.getAttribute('data-ex83');
+  if(ex83Selected===null){
+    ex83Selected=w;
+    chip.classList.add('sel');
+  }else if(ex83Selected===w){
+    ex83Selected=null;
+    chip.classList.remove('sel');
+  }else{
+    const a=ex83Selected, b=w;
+    ex83Pairs.push({a:a,b:b,locked:false});
+    ex83Selected=null;
+    renderEx83();
+  }
+});
+$('#ex83-pairs').addEventListener('click', function(e){
+  const b=e.target.closest('button[data-remove83]');
+  if(!b) return;
+  ex83Pairs.splice(+b.getAttribute('data-remove83'),1);
+  renderEx83();
+});
+$('#ex83-submit').addEventListener('click', function(){
+  const userPairs = ex83Pairs.filter(function(p){ return !p.locked; });
+  let score=0, html='';
+  userPairs.forEach(function(p){
+    const ok = EX83_PAIRS.some(function(exp){
+      return (exp[0]===p.a && exp[1]===p.b) || (exp[0]===p.b && exp[1]===p.a);
+    });
+    p.correct=ok;
+    if(ok) score++;
+  });
+  renderEx83Pairs();
+  const missing = EX83_PAIRS.filter(function(exp){
+    if(exp[0]==='brainless') return false;
+    return !userPairs.some(function(p){
+      return (exp[0]===p.a && exp[1]===p.b) || (exp[0]===p.b && exp[1]===p.a);
+    });
+  });
+  html+='<p class="small"><b>Đáp án (theo answer key của nguồn):</b></p>';
+  EX83_PAIRS.forEach(function(p){
+    html+='<div class="small">• <b>'+esc(p[0])+' – '+esc(p[1])+'</b>'+(p[0]==='brainless'?' (cặp mẫu)':'')+'</div>';
+  });
+  if(missing.length) html+='<p class="small bad" style="margin-top:8px">Còn thiếu: '+missing.map(function(m){return esc(m[0])+' – '+esc(m[1]);}).join('; ')+'</p>';
+  const total=EX83_PAIRS.length-1;
+  $('#ex83-result').innerHTML='<div class="result '+(score>=total-1?'pass':'fail')+'">Điểm: '+score+' / '+total+' (cặp mẫu brainless – silly được cho sẵn, không tính điểm)</div><div class="model-box">'+html+'</div>';
+  recordAttempt('exercises','8.3',score,total);
+});
+$('#ex83-reset').addEventListener('click', renderEx83);
+renderEx83();
+
+/* =========================================================
+   EXERCISE 8.4
+   ========================================================= */
+const EX84_BANK=['pessimistic','argumentative','sensitive','sociable','extravagant','assertive','inquisitive','reliable'];
+const EX84=[
+  {q:'When you have a problem, do you think the worst will happen?', a:'pessimistic', why:'Nghĩ đến điều tồi tệ nhất = bi quan (pessimistic).'},
+  {q:'Do you find it easy to tell your boss if you feel he or she has treated you badly?', a:'assertive', why:'Dám nói ra khi bị đối xử không công bằng = quyết đoán, biết bảo vệ quyền lợi (assertive).'},
+  {q:'Do you always look out of the window if you hear a car draw up?', a:'inquisitive', why:'Luôn tò mò nhìn ra khi có xe đến = ham tìm hiểu, tò mò (inquisitive).'},
+  {q:'Do you often buy your friends presents for no particular reason?', a:'extravagant', why:'Mua quà cho bạn không nhân dịp gì = tiêu xài hoang phí, phóng tay (extravagant).'},
+  {q:'Do you frequently disagree with what other people say?', a:'argumentative', why:'Thường xuyên bất đồng với người khác = hay tranh cãi (argumentative).'},
+  {q:'Do you lie awake at night if someone has said something unkind to you?', a:'sensitive', why:'Thức trắng đêm vì một lời nói = nhạy cảm (sensitive).'},
+  {q:'Do you prefer to be in the company of other people?', a:'sociable', why:'Thích ở bên người khác = hòa đồng (sociable).'}
+];
+function renderEx84(){
+  let h='';
+  EX84.forEach(function(it,i){
+    h+='<div class="row"><span class="qtext">'+(i+1)+'. '+esc(it.q)+'</span>';
+    h+='<select data-ex84="'+i+'" aria-label="Chọn tính từ cho câu '+(i+1)+'">';
+    h+='<option value="">— chọn —</option>';
+    EX84_BANK.forEach(function(w){ h+='<option value="'+w+'">'+w+'</option>'; });
+    h+='</select><span class="fb" id="ex84fb-'+i+'"></span></div>';
+  });
+  $('#ex84-body').innerHTML=h;
+  $('#ex84-result').innerHTML='';
+}
+renderEx84();
+$('#ex84-submit').addEventListener('click', function(){
+  let score=0, html='';
+  EX84.forEach(function(it,i){
+    const sel=$('select[data-ex84="'+i+'"]');
+    const fb=document.getElementById('ex84fb-'+i);
+    if(sel.value===it.a){ score++; fb.innerHTML='<span class="ok">✓ Đúng</span>'; }
+    else{ fb.innerHTML='<span class="bad">✗ Đáp án: '+it.a+'</span>'; }
+    html+='<div class="small"><b>'+(i+1)+'. '+it.a+'</b> — '+esc(it.why)+'</div>';
+  });
+  $('#ex84-result').innerHTML='<div class="result '+(score>=5?'pass':'fail')+'">Điểm: '+score+' / 7</div><div class="model-box">'+html+'</div>';
+  recordAttempt('exercises','8.4',score,7);
+});
+$('#ex84-reset').addEventListener('click', renderEx84);
+
+/* =========================================================
+   EXERCISE 8.5
+   ========================================================= */
+const EX85=[
+  {adj:'blunt', model:'Do you often tell people exactly what you think, even when it might upset them?', why:'blunt = thẳng thừng, thiếu tế nhị → câu hỏi kiểm tra việc nói thẳng đến mức làm người khác khó chịu.'},
+  {adj:'sensible', model:'Do you think carefully before making an important decision?', why:'sensible = biết suy xét, khôn ngoan → câu hỏi kiểm tra việc suy nghĩ kỹ trước khi quyết định.'},
+  {adj:'intelligent', model:'Do you usually understand difficult ideas quickly?', why:'intelligent = thông minh → câu hỏi kiểm tra khả năng hiểu nhanh các ý tưởng khó.'},
+  {adj:'even-tempered', model:'Do you stay calm when people annoy you?', why:'even-tempered = điềm đạm, ít nóng giận → câu hỏi kiểm tra việc giữ bình tĩnh khi bị làm phiền.'},
+  {adj:'original', model:'Do you often come up with unusual ideas?', why:'original = độc đáo, sáng tạo → câu hỏi kiểm tra việc nảy ra ý tưởng khác thường.'},
+  {adj:'obstinate', model:'Do you refuse to change your mind even when people give you good reasons?', why:'obstinate = cố chấp, bướng bỉnh → câu hỏi kiểm tra việc không chịu đổi ý dù có lý lẽ.'},
+  {adj:'stressed out', model:'Do you often feel unable to cope with all your work?', why:'stressed out = căng thẳng quá mức → câu hỏi kiểm tra cảm giác không thể xoay xở hết công việc.'}
+];
+function renderEx85(){
+  let h='';
+  EX85.forEach(function(it,i){
+    h+='<div class="row" style="align-items:flex-start"><span class="qtext"><b>'+esc(it.adj)+'</b> →</span>';
+    h+='<input type="text" id="ex85in-'+i+'" placeholder="Viết câu hỏi của bạn…" style="flex:1 1 300px">';
+    h+='<button class="btn ghost small-btn" data-reveal85="'+i+'">Đáp án mẫu</button>';
+    h+='</div><div id="ex85model-'+i+'" style="margin-bottom:10px"></div>';
+  });
+  $('#ex85-body').innerHTML=h;
+  $('#ex85-result').innerHTML='';
+  EX85.forEach(function(it,i){
+    try{ const v=localStorage.getItem(LS_KEY+'_ex85_'+i); if(v) $('#ex85in-'+i).value=v; }catch(e){}
+  });
+}
+renderEx85();
+document.addEventListener('click', function(e){
+  const b=e.target.closest('[data-reveal85]');
+  if(!b) return;
+  const i=+b.getAttribute('data-reveal85');
+  const it=EX85[i];
+  document.getElementById('ex85model-'+i).innerHTML=
+    '<div class="model-box"><b>Model question:</b> '+esc(it.model)+'<br><span class="small">'+esc(it.why)+'</span></div>';
+});
+$('#ex85-submit').addEventListener('click', function(){
+  let filled=0;
+  EX85.forEach(function(it,i){
+    const v=$('#ex85in-'+i).value.trim();
+    if(v){ filled++; try{ localStorage.setItem(LS_KEY+'_ex85_'+i, v); }catch(e){} }
+    document.getElementById('ex85model-'+i).innerHTML=
+      '<div class="model-box"><b>Model question:</b> '+esc(it.model)+'<br><span class="small">'+esc(it.why)+'</span></div>';
+  });
+  $('#ex85-result').innerHTML=
+    '<div class="result">Bạn đã viết '+filled+' / 7 câu hỏi. Đáp án mẫu đã hiển thị bên dưới mỗi mục.</div>'+
+    '<div class="model-box"><b>Tự đánh giá:</b> Câu trả lời hay không cần trùng khớp đáp án mẫu. Hãy kiểm tra: (1) câu hỏi có đúng ngữ pháp Yes/No question, (2) câu hỏi có thực sự kiểm tra đặc điểm tính cách đã cho, (3) ngữ cảnh có tự nhiên không. Ứng dụng không chấm tự động phần viết tự do.</div>';
+  recordAttempt('exercises','8.5',filled,7);
+});
+$('#ex85-reset').addEventListener('click', function(){
+  EX85.forEach(function(it,i){ try{ localStorage.removeItem(LS_KEY+'_ex85_'+i); }catch(e){} });
+  renderEx85();
+});
+
+/* =========================================================
+   EXERCISE 8.6
+   ========================================================= */
+const EX86_CHECKLIST=[
+  'Tôi dùng ít nhất 5 tính từ khác nhau trong bài.',
+  'Mỗi tính từ đều có lý do giải thích cụ thể.',
+  'Tôi dùng đúng cấu trúc câu (I would describe … as …, because …).',
+  'Tôi phân biệt được sắc thái tích cực / tiêu cực của các từ đã chọn.',
+  'Bài nói/bài viết của tôi rõ ràng, dễ theo dõi.'
+];
+const recorders={};
+function renderEx86(){
+  let h='';
+  ['Người thứ nhất','Người thứ hai'].forEach(function(label,i){
+    h+='<div class="person-box">';
+    h+='<h4>'+label+'</h4>';
+    h+='<label for="ex86name-'+i+'" class="small">Người đó là ai? (ví dụ: my brother)</label>';
+    h+='<input type="text" id="ex86name-'+i+'" placeholder="my mother / my best friend …">';
+    h+='<label for="ex86text-'+i+'" class="small" style="display:block;margin-top:8px">Bài miêu tả (dùng ít nhất 3 tính từ):</label>';
+    h+='<textarea id="ex86text-'+i+'" rows="4" placeholder="I would describe my mother as sensible because …"></textarea>';
+    h+='<div style="margin-top:8px">';
+    h+='<button class="btn ghost small-btn" data-rec-start="'+i+'">🎙 Ghi âm</button> ';
+    h+='<button class="btn ghost small-btn" data-rec-stop="'+i+'">⏹ Dừng</button>';
+    h+='</div><div id="ex86rec-'+i+'"></div>';
+    h+='</div>';
+  });
+  h+='<div class="model-box"><b>Gợi ý từ vựng:</b> <span id="ex86vocab"></span></div>';
+  $('#ex86-body').innerHTML=h;
+  const vlist=VOCAB.slice(0,40).map(function(v){
+    return '<button class="chip" data-say="'+esc(v.w)+'">'+esc(v.w)+'</button>';
+  }).join(' ');
+  $('#ex86vocab').innerHTML=vlist;
+
+  let ch='';
+  EX86_CHECKLIST.forEach(function(c,i){
+    ch+='<label><input type="checkbox" data-chk86="'+i+'"> <span>'+esc(c)+'</span></label>';
+  });
+  $('#ex86-checklist').innerHTML=ch;
+  $('#ex86-result').innerHTML='';
+}
+renderEx86();
+document.addEventListener('click', function(e){
+  const startBtn=e.target.closest('[data-rec-start]');
+  const stopBtn=e.target.closest('[data-rec-stop]');
+  if(startBtn){
+    const i=startBtn.getAttribute('data-rec-start');
+    startRecording(i);
+  }
+  if(stopBtn){
+    const i=stopBtn.getAttribute('data-rec-stop');
+    stopRecording(i);
+  }
+});
+async function startRecording(i){
+  const box=document.getElementById('ex86rec-'+i);
+  if(!navigator.mediaDevices || !window.MediaRecorder){
+    box.innerHTML='<div class="note-warn">Trình duyệt này không hỗ trợ ghi âm (MediaRecorder). Hãy dùng phần nhập văn bản bên trên.</div>';
+    return;
+  }
+  try{
+    const stream=await navigator.mediaDevices.getUserMedia({audio:true});
+    const rec=new MediaRecorder(stream);
+    const chunks=[];
+    rec.ondataavailable=function(ev){ if(ev.data.size>0) chunks.push(ev.data); };
+    rec.onstop=function(){
+      const blob=new Blob(chunks,{type:chunks[0]?chunks[0].type:'audio/webm'});
+      const url=URL.createObjectURL(blob);
+      box.innerHTML='<audio controls src="'+url+'"></audio><div class="small">Bản ghi âm chỉ tồn tại trong phiên này.</div>';
+      stream.getTracks().forEach(function(t){ t.stop(); });
+    };
+    rec.start();
+    recorders[i]=rec;
+    box.innerHTML='<div class="small">Đang ghi âm… Nhấn ⏹ Dừng để kết thúc.</div>';
+  }catch(err){
+    box.innerHTML='<div class="note-warn">Không thể truy cập micro (có thể do quyền truy cập bị từ chối). Hãy dùng phần nhập văn bản.</div>';
+  }
+}
+function stopRecording(i){
+  if(recorders[i] && recorders[i].state==='recording'){ recorders[i].stop(); }
+}
+$('#ex86-save').addEventListener('click', function(){
+  const t1=$('#ex86text-0').value.trim(), t2=$('#ex86text-1').value.trim();
+  const checked=$$('[data-chk86]').filter(function(c){ return c.checked; }).length;
+  const words=(t1+' '+t2).split(/\s+/).filter(Boolean).length;
+  state.savedSpeaking=true; saveState();
+  $('#ex86-result').innerHTML=
+    '<div class="result">Đã lưu. Số từ đã viết: '+words+'. Checklist: '+checked+' / '+EX86_CHECKLIST.length+'</div>'+
+    '<div class="model-box"><b>Tự đánh giá (không chấm tự động):</b> Ứng dụng không có hệ thống phân tích giọng nói, nên phần nói được đánh giá theo checklist. Hãy kiểm tra: dùng đủ 5 tính từ trở lên, giải thích lý do rõ ràng, cấu trúc câu đúng, phát âm rõ và trôi chảy.</div>';
+  recordAttempt('exercises','8.6',checked,EX86_CHECKLIST.length);
+});
+$('#ex86-reset').addEventListener('click', function(){
+  $('#ex86text-0').value=''; $('#ex86text-1').value='';
+  $('#ex86name-0').value=''; $('#ex86name-1').value='';
+  $$('[data-chk86]').forEach(function(c){ c.checked=false; });
+  $('#ex86rec-0').innerHTML=''; $('#ex86rec-1').innerHTML='';
+  $('#ex86-result').innerHTML='';
+});
+
+/* =========================================================
+   ADDITIONAL PRACTICE — QUIZ ENGINE
+   ========================================================= */
+function buildQuiz(containerId, questions, resultId, key){
+  const box=document.getElementById(containerId);
+  let h='';
+  questions.forEach(function(q,i){
+    h+='<div class="person-box" data-q="'+i+'">';
+    h+='<p><b>'+(i+1)+'.</b> '+esc(q.q)+'</p>';
+    if(q.type==='text'){
+      h+='<input type="text" id="'+key+'-in-'+i+'" placeholder="Nhập câu trả lời…">';
+    }else{
+      h+='<div class="radio-line" style="flex-direction:column;gap:6px">';
+      q.opts.forEach(function(o,j){
+        h+='<label><input type="radio" name="'+key+'-'+i+'" value="'+j+'"> '+esc(o)+'</label>';
+      });
+      h+='</div>';
+    }
+    h+='<div class="fb" id="'+key+'-fb-'+i+'"></div>';
+    h+='</div>';
+  });
+  box.innerHTML=h;
+  document.getElementById(resultId).innerHTML='';
+}
+function gradeQuiz(questions, key, resultId, totalOverride){
+  let score=0;
+  questions.forEach(function(q,i){
+    const fb=document.getElementById(key+'-fb-'+i);
+    let correct=false;
+    if(q.type==='text'){
+      const v=norm(document.getElementById(key+'-in-'+i).value);
+      correct = q.accept.some(function(a){ return norm(a)===v; });
+    }else{
+      const sel=document.querySelector('input[name="'+key+'-'+i+'"]:checked');
+      correct = sel && (+sel.value===q.a);
+    }
+    if(correct){ score++; fb.innerHTML='<span class="ok">✓ Đúng</span> '; }
+    else{
+      const ans = q.type==='text' ? q.accept[0] : q.opts[q.a];
+      fb.innerHTML='<span class="bad">✗ Sai — đáp án: '+esc(ans)+'</span> ';
+    }
+    if(q.why) fb.innerHTML+='<span class="small">'+esc(q.why)+'</span>';
+  });
+  const total=totalOverride||questions.length;
+  const res=document.getElementById(resultId);
+  res.innerHTML='<div class="result '+(score>=Math.ceil(total*0.7)?'pass':'fail')+'">Điểm: '+score+' / '+total+'</div>';
+  return score;
+}
+
+/* ---------- A1: Flashcards ---------- */
+let flashIndex=0, flashOrder=[], flashFlipped=false;
+function buildFlashOrder(){ flashOrder=shuffle(VOCAB.map(function(_,i){return i;})); flashIndex=0; flashFlipped=false; }
+buildFlashOrder();
+function renderFlash(){
+  if(!flashOrder.length) return;
+  const v=VOCAB[flashOrder[flashIndex]];
+  const inner=$('#flashInner');
+  if(!flashFlipped){
+    inner.innerHTML='<div class="fw">'+esc(v.w)+'</div><div class="small" style="margin-top:8px">Nhấn “Lật thẻ” để xem nghĩa</div>';
+  }else{
+    inner.innerHTML='<div class="fw" style="font-size:19px">'+esc(v.w)+'</div>'+
+      '<div class="fvi">'+esc(v.vi)+'</div>'+
+      '<div class="fipa">'+esc(v.gb||'')+' · '+esc(v.us||'')+'</div>'+
+      '<div style="margin-top:10px"><button class="play" data-say="'+esc(v.w)+'">▶ Nghe</button></div>';
+  }
+  renderFlashProgress();
+}
+function renderFlashProgress(){
+  const el=$('#flashProgress');
+  if(el) el.textContent=countReviewed()+' / '+VOCAB.length;
+  if(countReviewed()>=10 && !(state.extra.flashcards && state.extra.flashcards.attempts>0)){
+    recordAttempt('extra','flashcards',Math.min(countReviewed(),VOCAB.length),VOCAB.length);
+  }
+}
+$('#flashFlip').addEventListener('click', function(){ flashFlipped=!flashFlipped; renderFlash(); });
+$('#flashNext').addEventListener('click', function(){
+  flashIndex=(flashIndex+1)%flashOrder.length; flashFlipped=false; renderFlash();
+});
+$('#flashKnown').addEventListener('click', function(){
+  const v=VOCAB[flashOrder[flashIndex]];
+  state.flashcards[v.w]=true; saveState();
+  flashIndex=(flashIndex+1)%flashOrder.length; flashFlipped=false;
+  renderFlash(); updateStats();
+});
+renderFlash();
+
+/* ---------- A2: MCQ ---------- */
+let mcqQuestions=[];
+function buildMCQ(){
+  const pool=shuffle(VOCAB).slice(0,10);
+  mcqQuestions=pool.map(function(v){
+    const others=shuffle(VOCAB.filter(function(x){ return x.vi!==v.vi; })).slice(0,3).map(function(x){ return x.vi; });
+    const opts=shuffle(others.concat([v.vi]));
+    return {type:'mcq', q:'Từ “'+v.w+'” có nghĩa là gì?', opts:opts, a:opts.indexOf(v.vi),
+            why:'“'+v.w+'” = '+v.vi+'.'};
+  });
+  buildQuiz('mcq-body', mcqQuestions, 'mcq-result', 'mcq');
+}
+buildMCQ();
+$('#mcq-submit').addEventListener('click', function(){
+  const s=gradeQuiz(mcqQuestions,'mcq','mcq-result');
+  recordAttempt('extra','mcq',s,mcqQuestions.length);
+});
+$('#mcq-new').addEventListener('click', buildMCQ);
+
+/* ---------- A3: Fill in the blank ---------- */
+let fillQuestions=[], fillBank=[];
+function buildFill(){
+  const withEx=VOCAB.filter(function(v){ return v.ex && v.ex.toLowerCase().indexOf(v.w.toLowerCase())!==-1; });
+  const pool=shuffle(withEx).slice(0,8);
+  fillBank=shuffle(pool.map(function(v){ return v.w; }));
+  fillQuestions=pool.map(function(v){
+    const re=new RegExp(v.w.replace(/[-]/g,'[-]'),'i');
+    const blanked=v.ex.replace(re,'________');
+    return {type:'text', q:blanked, accept:[v.w], why:'Đáp án: '+v.w+' — '+v.vi+'.'};
+  });
+  $('#fillBank').textContent=fillBank.join(', ');
+  buildQuiz('fill-body', fillQuestions, 'fill-result', 'fill');
+}
+buildFill();
+$('#fill-submit').addEventListener('click', function(){
+  const s=gradeQuiz(fillQuestions,'fill','fill-result');
+  recordAttempt('extra','fill',s,fillQuestions.length);
+});
+$('#fill-new').addEventListener('click', buildFill);
+
+/* ---------- A4: Connotation ---------- */
+let connQuestions=[];
+function buildConn(){
+  const pool=shuffle(VOCAB.filter(function(v){ return v.connotation; })).slice(0,10);
+  connQuestions=pool.map(function(v){
+    return {type:'mcq', q:'Từ “'+v.w+'” mang sắc thái nào?', opts:['Tích cực (positive)','Tiêu cực (negative)'],
+            a: v.connotation==='positive'?0:1,
+            why:'“'+v.w+'” = '+v.vi+' — sắc thái '+(v.connotation==='positive'?'tích cực':'tiêu cực')+'.'};
+  });
+  buildQuiz('conn-body', connQuestions, 'conn-result', 'conn');
+}
+buildConn();
+$('#conn-submit').addEventListener('click', function(){
+  const s=gradeQuiz(connQuestions,'conn','conn-result');
+  recordAttempt('extra','conn',s,connQuestions.length);
+});
+$('#conn-new').addEventListener('click', buildConn);
+
+/* ---------- A5: GB vs US ---------- */
+let gbusQuestions=[];
+function buildGbus(){
+  const diff=VOCAB.filter(function(v){ return v.gb && v.us && v.gb!==v.us; });
+  const pool=shuffle(diff).slice(0,8);
+  gbusQuestions=pool.map(function(v){
+    const opts=shuffle([v.gb,v.us]);
+    return {type:'mcq', q:'Từ “'+v.w+'”: phiên âm nào là của tiếng Anh-Mỹ (en-US)?',
+            opts:opts, a:opts.indexOf(v.us),
+            why:'GB: '+v.gb+' · US: '+v.us+'. Nghĩa: '+v.vi+'.'};
+  });
+  buildQuiz('gbus-body', gbusQuestions, 'gbus-result', 'gbus');
+}
+buildGbus();
+$('#gbus-submit').addEventListener('click', function(){
+  const s=gradeQuiz(gbusQuestions,'gbus','gbus-result');
+  recordAttempt('extra','gbus',s,gbusQuestions.length);
+});
+$('#gbus-new').addEventListener('click', buildGbus);
+
+/* ---------- A6: Mixed ---------- */
+let mixedQuestions=[];
+function buildMixed(){
+  const qs=[];
+  // 4 MCQ meaning
+  shuffle(VOCAB).slice(0,4).forEach(function(v){
+    const others=shuffle(VOCAB.filter(function(x){ return x.vi!==v.vi; })).slice(0,3).map(function(x){ return x.vi; });
+    const opts=shuffle(others.concat([v.vi]));
+    qs.push({type:'mcq', q:'Nghĩa của “'+v.w+'” là gì?', opts:opts, a:opts.indexOf(v.vi), why:'“'+v.w+'” = '+v.vi+'.'});
+  });
+  // 3 fill
+  const withEx=VOCAB.filter(function(v){ return v.ex && v.ex.toLowerCase().indexOf(v.w.toLowerCase())!==-1; });
+  shuffle(withEx).slice(0,3).forEach(function(v){
+    const re=new RegExp(v.w,'i');
+    qs.push({type:'text', q:v.ex.replace(re,'________'), accept:[v.w], why:'Đáp án: '+v.w+' — '+v.vi+'.'});
+  });
+  // 2 connotation
+  shuffle(VOCAB.filter(function(v){ return v.connotation; })).slice(0,2).forEach(function(v){
+    qs.push({type:'mcq', q:'“'+v.w+'” mang sắc thái nào?', opts:['Tích cực','Tiêu cực'],
+             a: v.connotation==='positive'?0:1, why:'“'+v.w+'” = '+v.vi+'.'});
+  });
+  // 1 pronunciation
+  const diff=VOCAB.filter(function(v){ return v.gb && v.us && v.gb!==v.us; });
+  if(diff.length){
+    const v=shuffle(diff)[0];
+    const opts=shuffle([v.gb,v.us]);
+    qs.push({type:'mcq', q:'Từ “'+v.w+'”: phiên âm nào là en-US?', opts:opts, a:opts.indexOf(v.us),
+             why:'GB: '+v.gb+' · US: '+v.us+'.'});
+  }
+  mixedQuestions=shuffle(qs);
+  buildQuiz('mixed-body', mixedQuestions, 'mixed-result', 'mixed');
+}
+buildMixed();
+$('#mixed-submit').addEventListener('click', function(){
+  const s=gradeQuiz(mixedQuestions,'mixed','mixed-result');
+  recordAttempt('extra','mixed',s,mixedQuestions.length);
+});
+$('#mixed-new').addEventListener('click', buildMixed);
+
+/* =========================================================
+   SOURCE SECTION RENDERING
+   ========================================================= */
+function sourceVocabTable(items, extraCol){
+  let h='<div class="tablewrap"><table><thead><tr><th>Từ vựng</th><th>Nghĩa tiếng Việt</th><th>'+(extraCol||'Ví dụ')+'</th></tr></thead><tbody>';
+  items.forEach(function(it){
+    h+='<tr><td>'+esc(it.w)+(it.gb?' '+esc(it.gb):'')+'</td><td>'+esc(it.vi)+'</td><td>';
+    if(extraCol==='Lưu ý') h+=esc(it.note||'');
+    else h+= it.ex ? '“'+esc(it.ex)+'”' : '';
+    h+='</td></tr>';
+  });
+  h+='</tbody></table></div>';
+  return h;
+}
+(function renderSourceVocab(){
+  let h='';
+  h+='<h4>A. Intellectual ability – Khả năng trí tuệ</h4>';
+  SEC_A.forEach(function(g){
+    h+='<h5>'+esc(g.title)+'</h5>';
+    h+=sourceVocabTable(g.items, g.title.indexOf('Lacking ability')!==-1?'Lưu ý':null);
+    if(g.note) h+='<div class="src-block">'+fmtNote(g.note)+'</div>';
+  });
+  h+='<h4>B. Attitudes towards life – Thái độ đối với cuộc sống</h4>';
+  SEC_B.forEach(function(g){
+    h+=sourceVocabTable(g.items);
+    if(g.note) h+='<div class="src-block">'+fmtNote(g.note)+'</div>';
+  });
+  h+='<h4>C. Attitudes towards other people – Thái độ đối với người khác</h4>';
+  SEC_C.forEach(function(g){
+    h+='<h5>'+esc(g.title)+'</h5>';
+    h+=sourceVocabTable(g.items);
+    if(g.note) h+='<div class="src-block">'+fmtNote(g.note)+'</div>';
+  });
+  h+='<h4>D. One person’s meat is another person’s poison – Mỗi người có một quan điểm khác nhau</h4>';
+  h+='<div class="src-block"><p>'+esc(SEC_D_INTRO)+'</p></div>';
+  h+='<div class="tablewrap"><table><thead><tr><th>Positive associations – Sắc thái tích cực</th><th>Negative associations – Sắc thái tiêu cực</th></tr></thead><tbody>';
+  D_PAIRS.forEach(function(p){
+    h+='<tr><td>'+(p.p?esc(p.p)+' – '+esc(p.pvi):'—')+'</td><td>'+esc(p.n)+' – '+esc(p.nvi)+'</td></tr>';
+  });
+  h+='</tbody></table></div>';
+  h+='<div class="src-block">'+fmtNote(`Lưu ý về sắc thái nghĩa
+
+* Thrifty thường được khen là biết tiết kiệm; stingy thường bị chê là keo kiệt.
+* Confident thể hiện sự tự tin; arrogant thể hiện sự tự cao, coi mình hơn người.
+* Assertive là biết thể hiện quan điểm và bảo vệ quyền lợi một cách rõ ràng; aggressive thiên về thái độ đối đầu hoặc gây hấn.
+* Inquiring hoặc enquiring có thể diễn tả sự ham tìm hiểu; nosy thường mang nghĩa tò mò chuyện riêng của người khác.
+* Naive thường nhấn mạnh sự thiếu kinh nghiệm hoặc dễ tin người; innocent có thể mang nghĩa trong sáng hoặc vô tội.`)+'</div>';
+  document.getElementById('source-vocab').innerHTML=h;
+})();
+
+(function renderSourceExercises(){
+  let h='';
+  h+='<div class="src-block"><h4>Exercise 8.1 – Match the opposites</h4>';
+  h+='<p>Nối các từ ở cột trái với từ trái nghĩa ở cột phải.</p>';
+  h+='<div class="tablewrap"><table><thead><tr><th>No.</th><th>Word</th><th>Answer choices</th></tr></thead><tbody>';
+  const ch=EX81.choices;
+  EX81.items.forEach(function(it,i){
+    const keys=Object.keys(ch);
+    h+='<tr><td>'+it.id+'</td><td>'+esc(it.word)+'</td><td>'+keys[i]+'. '+esc(ch[keys[i]])+'</td></tr>';
+  });
+  h+='</tbody></table></div></div>';
+
+  h+='<div class="src-block"><h4>Exercise 8.2 – Positive or negative impressions</h4>';
+  h+='<p>Xác định mỗi câu thể hiện ấn tượng tích cực hay tiêu cực về một người. Sau đó, viết lại câu để thể hiện sắc thái ngược lại.</p>';
+  h+='<p><b>Example:</b> Carmen’s very thrifty. — Original impression: Positive. — Opposite impression: Carmen’s very stingy.</p>';
+  h+='<ul class="notes">';
+  EX82.forEach(function(it){ h+='<li>'+esc(it.s)+'</li>'; });
+  h+='</ul></div>';
+
+  h+='<div class="src-block"><h4>Exercise 8.3 – Match words with similar meanings</h4>';
+  h+='<p>Ghép các từ có nghĩa tương tự. Có một cặp mẫu: brainless – silly.</p>';
+  h+='<div class="tablewrap"><table><thead><tr><th>Column A</th><th>Column B</th><th>Column C</th><th>Column D</th></tr></thead><tbody><tr>';
+  ['A','B','C','D'].forEach(function(c){
+    h+='<td>'+EX83_COLS[c].map(function(w){return esc(w);}).join('<br>')+'</td>';
+  });
+  h+='</tr></tbody></table></div></div>';
+
+  h+='<div class="src-block"><h4>Exercise 8.4 – Personality questionnaire</h4>';
+  h+='<p>Đọc các câu hỏi và điền tính từ phù hợp trong danh sách.</p>';
+  h+='<p><b>Word bank:</b> '+EX84_BANK.join(', ')+'.</p>';
+  h+='<p><b>Example:</b> If you arrange to meet at 7 pm, do you arrive at 7 pm? — Answer: reliable</p>';
+  h+='<ul class="notes">';
+  EX84.forEach(function(it){ h+='<li>'+esc(it.q)+'</li>'; });
+  h+='</ul></div>';
+
+  h+='<div class="src-block"><h4>Exercise 8.5 – Write personality questions</h4>';
+  h+='<p>Viết một câu hỏi tương tự Exercise 8.4 để tìm hiểu xem một người có đặc điểm tính cách sau hay không.</p>';
+  h+='<p><b>Example:</b> thrifty → Do you use up leftover food?</p>';
+  h+='<ul class="notes">';
+  EX85.forEach(function(it){ h+='<li>'+esc(it.adj)+' → __________________________________</li>'; });
+  h+='</ul></div>';
+
+  h+='<div class="src-block"><h4>Exercise 8.6 – Speaking: Over to you</h4>';
+  h+='<p>Chọn hai người quan trọng trong cuộc sống của bạn. Miêu tả tính cách của họ bằng các tính từ trong bài và giải thích vì sao bạn chọn những từ đó.</p>';
+  h+='<p><b>Example:</b><br>My brother is sociable because he loves being with other people.<br>My mother is sensible because she always thinks carefully before making important decisions.</p>';
+  h+='<p><b>Useful speaking structures</b></p><ul class="notes">'+
+     '<li>I would describe … as …</li><li>He/She is quite …</li><li>One of his/her most noticeable characteristics is …</li>'+
+     '<li>I chose this adjective because …</li><li>Although he/she can sometimes be …, I think …</li>'+
+     '<li>In my opinion, being … is important because …</li></ul></div>';
+  document.getElementById('source-exercises').innerHTML=h;
+})();
+
+(function renderSourceAnswers(){
+  let h='';
+  h+='<div class="src-block"><h4>Exercise 8.1</h4><ul class="notes">';
+  h+='<li>f — dim</li><li>a — introverted</li><li>c — courteous</li><li>e — kind-hearted</li><li>b — tight-fisted</li><li>d — gregarious</li>';
+  h+='</ul></div>';
+
+  h+='<div class="src-block"><h4>Exercise 8.2</h4>';
+  h+='<div class="tablewrap"><table><thead><tr><th>No.</th><th>Original impression</th><th>Opposite impression</th></tr></thead><tbody>';
+  EX82.forEach(function(it,i){
+    h+='<tr><td>'+(i+1)+'</td><td>'+(it.imp==='positive'?'Positive':'Negative')+'</td><td>'+esc(it.model)+'</td></tr>';
+  });
+  h+='</tbody></table></div>';
+  h+='<p class="small">Lưu ý: Đây là đáp án gợi ý về sắc thái. Một số cặp từ không hoàn toàn đồng nghĩa hoặc trái nghĩa trong mọi ngữ cảnh. Ví dụ, assertive không phải lúc nào cũng là từ trái nghĩa trực tiếp của bossy hoặc aggressive.</p></div>';
+
+  h+='<div class="src-block"><h4>Exercise 8.3</h4><ul class="notes">';
+  EX83_PAIRS.forEach(function(p){ h+='<li>'+esc(p[0])+' – '+esc(p[1])+'</li>'; });
+  h+='</ul></div>';
+
+  h+='<div class="src-block"><h4>Exercise 8.4</h4><ul class="notes">';
+  EX84.forEach(function(it){ h+='<li>'+esc(it.a)+'</li>'; });
+  h+='</ul></div>';
+
+  h+='<div class="src-block"><h4>Exercise 8.5 – Các câu trả lời mẫu</h4><ul class="notes">';
+  EX85.forEach(function(it){ h+='<li>'+esc(it.adj.charAt(0).toUpperCase()+it.adj.slice(1))+': '+esc(it.model)+'</li>'; });
+  h+='</ul></div>';
+
+  h+='<div class="src-block"><h4>Exercise 8.6</h4><p>Đây là bài nói cá nhân. Giáo viên đánh giá dựa trên:</p><ul class="notes">'+
+     '<li>Sử dụng tính từ phù hợp với tính cách được mô tả.</li><li>Giải thích rõ lý do lựa chọn tính từ.</li>'+
+     '<li>Sử dụng cấu trúc câu đúng.</li><li>Phát âm, độ trôi chảy và khả năng phát triển ý.</li></ul></div>';
+
+  document.getElementById('source-answers').innerHTML=h;
+})();
+
+/* =========================================================
+   PROGRESS DASHBOARD
+   ========================================================= */
+function renderProgressDashboard(){
+  const list=$('#progressList');
+  if(!list) return;
+  let h='';
+  TRACKED_SECTIONS.forEach(function(k){
+    const labels={objectives:'1. Learning objectives',a:'2. A. Intellectual ability',b:'3. B. Attitudes towards life',
+                  c:'4. C. Attitudes towards other people',d:'5. D. One person’s meat…',pron:'6. Pronunciation laboratory'};
+    h+='<li><span>'+labels[k]+'</span><span>'+(state.sections[k]?'<b class="ok">✓ Đã học</b>':'<span class="small">Chưa đánh dấu</span>')+'</span></li>';
+  });
+  EXERCISE_KEYS.forEach(function(k){
+    const r=state.exercises[k];
+    h+='<li><span>Exercise '+k+'</span><span>'+(r&&r.attempts>0 ? '<b>'+r.best+'/'+r.total+'</b> <span class="small">(lần cuối '+r.last+'/'+r.total+', '+r.attempts+' lần thử)</span>' : '<span class="small">Chưa làm</span>')+'</span></li>';
+  });
+  EXTRA_KEYS.forEach(function(k){
+    const labels={flashcards:'A1. Flashcards',mcq:'A2. Multiple choice',fill:'A3. Fill in the blank',
+                  conn:'A4. Connotation',gbus:'A5. British vs American',mixed:'A6. Mixed review'};
+    const r=state.extra[k];
+    h+='<li><span>'+labels[k]+' <span class="small">(bổ sung)</span></span><span>'+(r&&r.attempts>0 ? '<b>'+r.best+'/'+r.total+'</b>' : '<span class="small">Chưa làm</span>')+'</span></li>';
+  });
+  list.innerHTML=h;
+
+  const rl=$('#reviewList');
+  let r='';
+  EXERCISE_KEYS.forEach(function(k){
+    const e=state.exercises[k];
+    if(e && e.attempts>0 && e.best < e.total*0.7){
+      r+='<li><span>Exercise '+k+'</span><span class="bad">Cần ôn lại — điểm cao nhất '+e.best+'/'+e.total+'</span></li>';
+    }
+  });
+  EXTRA_KEYS.forEach(function(k){
+    const e=state.extra[k];
+    if(e && e.attempts>0 && e.best < e.total*0.7){
+      r+='<li><span>'+k+' (bổ sung)</span><span class="bad">Cần ôn lại — '+e.best+'/'+e.total+'</span></li>';
+    }
+  });
+  if(!r) r='<li><span>Chưa có mục nào cần ôn lại.</span></li>';
+  rl.innerHTML=r;
+}
+
+/* ---------- reset ---------- */
+$('#resetBtn').addEventListener('click', function(){
+  const ok=window.confirm('Bạn có chắc muốn đặt lại TOÀN BỘ tiến độ học tập? Hành động này không thể hoàn tác.');
+  if(!ok) return;
+  state=JSON.parse(JSON.stringify(DEFAULT_STATE));
+  saveState();
+  renderEx81(); renderEx82(); renderEx83(); renderEx84(); renderEx85(); renderEx86();
+  buildMCQ(); buildFill(); buildConn(); buildGbus(); buildMixed();
+  buildFlashOrder(); renderFlash();
+  updateStats();
+  toast('Đã đặt lại toàn bộ tiến độ.');
+});
+
+/* =========================================================
+   INIT
+   ========================================================= */
+$('#lsStatus').textContent = storageOK
+  ? 'localStorage đang hoạt động: tiến độ được lưu trên trình duyệt này.'
+  : 'Cảnh báo: localStorage không khả dụng. Ứng dụng vẫn dùng được nhưng tiến độ sẽ không được lưu.';
+
+updateStats();
+})();
+</script>
+</body>
+</html>
