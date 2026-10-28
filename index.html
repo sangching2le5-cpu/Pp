@@ -21,7 +21,6 @@ body{
 }
 .skip{position:absolute;left:-9999px;top:0;background:#fff;padding:8px 12px;z-index:100}
 .skip:focus{left:8px;top:8px}
-/* ---------- header ---------- */
 .topbar{
   position:sticky; top:0; z-index:40; background:linear-gradient(180deg,#ffffff 0%,#f7fbff 100%);
   border-bottom:1px solid var(--line); box-shadow:0 2px 10px rgba(16,40,70,.05);
@@ -42,7 +41,6 @@ body{
 .stat b{display:block; color:var(--ink); font-size:14px; font-weight:700}
 .stat .bar{height:5px; background:var(--blue-soft); border-radius:99px; margin-top:5px; overflow:hidden; width:110px}
 .stat .bar i{display:block; height:100%; background:var(--blue); width:0%; transition:width .35s}
-/* ---------- layout ---------- */
 .layout{display:grid; grid-template-columns:265px 1fr; gap:20px; max-width:1400px; margin:0 auto; padding:20px 16px 70px}
 .sidebar{
   align-self:start; position:sticky; top:88px; background:var(--card); border:1px solid var(--line);
@@ -71,7 +69,6 @@ p.lead{margin-top:0; color:var(--muted)}
 ul.notes{margin:8px 0 12px; padding-left:20px}
 ul.notes li{margin-bottom:5px; font-size:14.5px}
 .small{font-size:13.5px; color:var(--muted)}
-/* ---------- vocab ---------- */
 .vgrid{display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:12px; margin:12px 0}
 .vcard{border:1px solid var(--line); border-radius:12px; padding:12px 14px; background:#fbfdff; transition:border-color .15s}
 .vcard:hover{border-color:#bcd6f3}
@@ -91,7 +88,6 @@ ul.notes li{margin-bottom:5px; font-size:14.5px}
 }
 .play:hover{background:#d6e7fa}
 .play:focus-visible{outline:2px solid var(--blue); outline-offset:1px}
-/* ---------- tables ---------- */
 .tablewrap{overflow-x:auto; margin:10px 0}
 table{border-collapse:collapse; width:100%; font-size:14px; background:#fff}
 th,td{border:1px solid var(--line); padding:7px 10px; text-align:left; vertical-align:top}
@@ -99,7 +95,6 @@ th{background:var(--blue-soft); color:var(--blue-dark); font-size:13px}
 tbody tr:nth-child(even){background:#fafcff}
 td.neg{color:#8a2f22}
 td.pos{color:#1f6b45}
-/* ---------- buttons / inputs ---------- */
 button.btn{
   background:var(--blue); color:#fff; border:none; border-radius:10px; padding:9px 16px;
   font-size:14.5px; font-weight:600; cursor:pointer; margin:6px 8px 6px 0;
@@ -119,7 +114,6 @@ input[type=text], textarea, select{
 input[type=text]:focus, textarea:focus, select:focus{outline:2px solid #9fc6f2; border-color:var(--blue)}
 textarea{min-height:64px; resize:vertical}
 label{font-size:14.5px}
-/* ---------- exercise blocks ---------- */
 .exercise{border:1px solid var(--line); border-radius:12px; padding:16px 18px; margin:16px 0; background:#fdfeff}
 .exercise > h3{margin-top:0}
 .instr{font-size:14px; color:var(--muted); margin:0 0 12px}
@@ -154,10 +148,7 @@ label{font-size:14.5px}
 .radio-line{display:flex; gap:16px; flex-wrap:wrap; margin:5px 0}
 .radio-line label{display:flex; align-items:center; gap:6px; font-size:14px; cursor:pointer}
 .radio-line input{width:auto}
-/* ---------- flashcards ---------- */
-.flash{
-  perspective:1000px; max-width:420px; margin:14px auto;
-}
+.flash{perspective:1000px; max-width:420px; margin:14px auto;}
 .flash-inner{
   background:linear-gradient(160deg,#f7fbff,#eaf3fd); border:1px solid var(--line); border-radius:16px;
   min-height:170px; display:flex; flex-direction:column; align-items:center; justify-content:center;
@@ -166,9 +157,7 @@ label{font-size:14.5px}
 .flash-inner .fw{font-size:26px; font-weight:800; color:var(--blue-dark)}
 .flash-inner .fvi{font-size:17px; margin-top:10px; color:#1f6b45}
 .flash-inner .fipa{font-size:13px; color:var(--muted); margin-top:6px}
-/* ---------- misc ---------- */
 .badge{display:inline-block; font-size:11.5px; font-weight:700; padding:2px 8px; border-radius:99px; background:var(--purple-soft); color:var(--purple); margin-left:8px; vertical-align:middle}
-.badge.warnbadge{background:var(--amber-soft); color:var(--amber)}
 .toast{
   position:fixed; left:50%; bottom:24px; transform:translateX(-50%) translateY(20px);
   background:#22374f; color:#fff; padding:11px 20px; border-radius:11px; font-size:14px;
@@ -250,7 +239,6 @@ audio{max-width:100%; margin-top:8px}
 
   <main id="main">
 
-    <!-- ============ 1. OBJECTIVES ============ -->
     <section class="card" id="sec-objectives">
       <h2>1. Learning objectives – Mục tiêu bài học</h2>
       <p class="lead">Sau bài học, người học có thể:</p>
@@ -278,28 +266,24 @@ audio{max-width:100%; margin-top:8px}
       <button class="btn" data-complete="objectives">Đánh dấu đã học xong mục này</button>
     </section>
 
-    <!-- ============ 2. A ============ -->
     <section class="card" id="sec-a">
       <h2>2. A. Intellectual ability – Khả năng trí tuệ</h2>
       <div id="sec-a-body"></div>
       <button class="btn" data-complete="a">Đánh dấu đã học xong mục A</button>
     </section>
 
-    <!-- ============ 3. B ============ -->
     <section class="card" id="sec-b">
       <h2>3. B. Attitudes towards life – Thái độ đối với cuộc sống</h2>
       <div id="sec-b-body"></div>
       <button class="btn" data-complete="b">Đánh dấu đã học xong mục B</button>
     </section>
 
-    <!-- ============ 4. C ============ -->
     <section class="card" id="sec-c">
       <h2>4. C. Attitudes towards other people – Thái độ đối với người khác</h2>
       <div id="sec-c-body"></div>
       <button class="btn" data-complete="c">Đánh dấu đã học xong mục C</button>
     </section>
 
-    <!-- ============ 5. D ============ -->
     <section class="card" id="sec-d">
       <h2>5. D. One person's meat is another person's poison – Mỗi người có một quan điểm khác nhau</h2>
       <p>
@@ -326,11 +310,11 @@ audio{max-width:100%; margin-top:8px}
       <button class="btn" data-complete="d">Đánh dấu đã học xong mục D</button>
     </section>
 
-    <!-- ============ 6. PRONUNCIATION ============ -->
     <section class="card" id="sec-pron">
       <h2>6. Pronunciation laboratory – Phòng luyện phát âm</h2>
       <p class="lead">
         Chọn giọng Anh-Anh (en-GB) hoặc Anh-Mỹ (en-US). Nhấn nút ▶ để nghe. IPA được hiển thị riêng cho từng biến thể.
+        Phiên âm Anh-Mỹ đã được chuẩn hóa theo General American (GA).
       </p>
 
       <div class="note-warn" id="ttsNotice">
@@ -368,19 +352,17 @@ audio{max-width:100%; margin-top:8px}
         </table>
       </div>
       <p class="small">
-        Ghi chú: khi IPA của hai biến thể khác nhau, ô tương ứng được tô đậm. Số âm tiết mang tính ước lượng từ phiên âm IPA.
+        Ghi chú: khi IPA của hai biến thể khác nhau, ô tương ứng được tô đậm. Phiên âm US theo General American (GA).
       </p>
       <button class="btn" data-complete="pron">Đánh dấu đã luyện phát âm xong</button>
     </section>
 
-    <!-- ============ 7. ORIGINAL EXERCISES ============ -->
     <section class="card" id="sec-ex">
       <h2>7. Original exercises – Bài tập gốc (8.1 – 8.6)</h2>
       <p class="lead">
         Toàn bộ sáu bài tập gốc được giữ nguyên nội dung và thứ tự. Điểm được lưu vào localStorage.
       </p>
 
-      <!-- 8.1 -->
       <div class="exercise" id="ex81">
         <h3>Exercise 8.1 – Match the opposites</h3>
         <p class="instr">Nối các từ ở cột trái với từ trái nghĩa ở cột phải.</p>
@@ -390,7 +372,6 @@ audio{max-width:100%; margin-top:8px}
         <div id="ex81-result"></div>
       </div>
 
-      <!-- 8.2 -->
       <div class="exercise" id="ex82">
         <h3>Exercise 8.2 – Positive or negative impressions</h3>
         <p class="instr">
@@ -408,7 +389,6 @@ audio{max-width:100%; margin-top:8px}
         <div id="ex82-result"></div>
       </div>
 
-      <!-- 8.3 -->
       <div class="exercise" id="ex83">
         <h3>Exercise 8.3 – Match words with similar meanings</h3>
         <p class="instr">Ghép các từ có nghĩa tương tự. Có một cặp mẫu: brainless – silly.</p>
@@ -423,7 +403,6 @@ audio{max-width:100%; margin-top:8px}
         <div id="ex83-result"></div>
       </div>
 
-      <!-- 8.4 -->
       <div class="exercise" id="ex84">
         <h3>Exercise 8.4 – Personality questionnaire</h3>
         <p class="instr">Đọc các câu hỏi và điền tính từ phù hợp trong danh sách.</p>
@@ -439,7 +418,6 @@ audio{max-width:100%; margin-top:8px}
         <div id="ex84-result"></div>
       </div>
 
-      <!-- 8.5 -->
       <div class="exercise" id="ex85">
         <h3>Exercise 8.5 – Write personality questions</h3>
         <p class="instr">
@@ -459,7 +437,6 @@ audio{max-width:100%; margin-top:8px}
         <div id="ex85-result"></div>
       </div>
 
-      <!-- 8.6 -->
       <div class="exercise" id="ex86">
         <h3>Exercise 8.6 – Speaking: Over to you</h3>
         <p class="instr">
@@ -489,7 +466,6 @@ audio{max-width:100%; margin-top:8px}
       </div>
     </section>
 
-    <!-- ============ 8. ADDITIONAL PRACTICE ============ -->
     <section class="card" id="sec-extra">
       <h2>8. Additional Practice – Luyện tập bổ sung</h2>
       <p class="lead">
@@ -560,7 +536,6 @@ audio{max-width:100%; margin-top:8px}
       </div>
     </section>
 
-    <!-- ============ 9. ORIGINAL SOURCE ============ -->
     <section class="card" id="sec-source">
       <h2>9. Original Source – Nguyên văn nội dung nguồn</h2>
       <p class="lead">
@@ -616,7 +591,6 @@ audio{max-width:100%; margin-top:8px}
       </div>
     </section>
 
-    <!-- ============ 10. PROGRESS ============ -->
     <section class="card" id="sec-progress">
       <h2>10. Progress dashboard – Bảng tiến độ</h2>
       <p class="lead">Tiến độ được lưu trong <code>localStorage</code> của trình duyệt này.</p>
@@ -698,6 +672,7 @@ function recordAttempt(bucket,key,score,total){
 
 /* =========================================================
    VOCABULARY DATA (transcribed from the supplied source)
+   IPA US = General American (GA), checked for standard US pronunciation
    ========================================================= */
 const SEC_A=[
  { title:'1. Positive or neutral descriptions – Miêu tả tích cực hoặc trung tính',
@@ -760,8 +735,8 @@ Linh is sensitive and gets upset when people criticise her.
 
 Linh là người nhạy cảm và buồn khi bị người khác chỉ trích.`,
    items:[
-    {w:'pessimistic',gb:'/ˌpesɪˈmɪstɪk/',us:'/ˌpesɪˈmɪstɪk/',vi:'bi quan',st:'pessiMIStic',ex:'He is pessimistic about the future.',exVi:'Anh ấy bi quan về tương lai.'},
-    {w:'optimistic',gb:'/ˌɒptɪˈmɪstɪk/',us:'/ˌɑːptɪˈmɪstɪk/',vi:'lạc quan',st:'optiMIStic',ex:'She remains optimistic despite the difficulties.',exVi:'Cô ấy vẫn lạc quan bất chấp khó khăn.'},
+    {w:'pessimistic',gb:'/ˌpesɪˈmɪstɪk/',us:'/ˌpesəˈmɪstɪk/',vi:'bi quan',st:'pessiMIStic',ex:'He is pessimistic about the future.',exVi:'Anh ấy bi quan về tương lai.'},
+    {w:'optimistic',gb:'/ˌɒptɪˈmɪstɪk/',us:'/ˌɑːptəˈmɪstɪk/',vi:'lạc quan',st:'optiMIStic',ex:'She remains optimistic despite the difficulties.',exVi:'Cô ấy vẫn lạc quan bất chấp khó khăn.'},
     {w:'extroverted',gb:'/ˈekstrəvɜːtɪd/',us:'/ˈekstrəvɜːrtɪd/',vi:'hướng ngoại',st:'EXTROverted',ex:'He is extroverted and enjoys meeting new people.',exVi:'Anh ấy hướng ngoại và thích gặp gỡ người mới.'},
     {w:'introverted',gb:'/ˈɪntrəvɜːtɪd/',us:'/ˈɪntrəvɜːrtɪd/',vi:'hướng nội',st:'INTROverted',ex:'She is introverted and enjoys spending time alone.',exVi:'Cô ấy hướng nội và thích dành thời gian một mình.'},
     {w:'tense',gb:'/tens/',us:'/tens/',vi:'căng thẳng',st:'TENSE',ex:'I feel tense before an exam.',exVi:'Tôi cảm thấy căng thẳng trước kỳ thi.'},
@@ -863,16 +838,17 @@ const D_PAIRS=[
  {p:null,pvi:'',n:'nosy',nvi:'tọc mạch'}
 ];
 
+/* US IPA updated to General American standard */
 const D_IPA={
  'determined':['/dɪˈtɜːmɪnd/','/dɪˈtɜːrmɪnd/'],
- 'obstinate':['/ˈɒbstɪnət/','/ˈɑːbstɪnət/'],
+ 'obstinate':['/ˈɒbstɪnət/','/ˈɑːbstənət/'],
  'thrifty':['/ˈθrɪfti/','/ˈθrɪfti/'],
  'stingy':['/ˈstɪndʒi/','/ˈstɪndʒi/'],
  'economical':['/ˌiːkəˈnɒmɪkəl/','/ˌiːkəˈnɑːmɪkəl/'],
  'mean':['/miːn/','/miːn/'],
  'self-assured':['/ˌself əˈʃʊəd/','/ˌself əˈʃʊrd/'],
- 'self-important':['/ˌself ɪmˈpɔːtənt/','/ˌself ɪmˈpɔːrtnt/'],
- 'confident':['/ˈkɒnfɪdənt/','/ˈkɑːnfɪdənt/'],
+ 'self-important':['/ˌself ɪmˈpɔːtənt/','/ˌself ɪmˈpɔːrtənt/'],
+ 'confident':['/ˈkɒnfɪdənt/','/ˈkɑːnfədənt/'],
  'arrogant':['/ˈærəɡənt/','/ˈærəɡənt/'],
  'unconventional':['/ˌʌnkənˈvenʃənəl/','/ˌʌnkənˈvenʃənəl/'],
  'eccentric':['/ɪkˈsentrɪk/','/ɪkˈsentrɪk/'],
@@ -886,7 +862,7 @@ const D_IPA={
  'curt':['/kɜːt/','/kɜːrt/'],
  'broad-minded':['/ˌbrɔːd ˈmaɪndɪd/','/ˌbrɔːd ˈmaɪndɪd/'],
  'unprincipled':['/ʌnˈprɪnsəpəld/','/ʌnˈprɪnsəpəld/'],
- 'enquiring':['/ɪnˈkwaɪərɪŋ/','/ɪnˈkwaɪərɪŋ/'],
+ 'enquiring':['/ɪnˈkwaɪərɪŋ/','/ɪnˈkwaɪrɪŋ/'],
  'inquisitive':['/ɪnˈkwɪzətɪv/','/ɪnˈkwɪzətɪv/'],
  'generous':['/ˈdʒenərəs/','/ˈdʒenərəs/'],
  'extravagant':['/ɪkˈstrævəɡənt/','/ɪkˈstrævəɡənt/'],
@@ -921,7 +897,6 @@ const D_STRESS={
  'peculiar':'peCUliar','weird':'WEIRD','permissive':'perMISSive','nosy':'NOsy'
 };
 
-/* ---------- helpers to collect all vocabulary ---------- */
 function allVocab(){
   const out=[];
   [['A',SEC_A],['B',SEC_B],['C',SEC_C]].forEach(function(sec){
@@ -952,29 +927,57 @@ function refreshVoices(){
   voices = window.speechSynthesis.getVoices() || [];
   updateVoiceStatus();
 }
+
+function pickBestVoice(arr){
+  const preferred = ['google','microsoft','natural','enhanced','neural',
+                     'samantha','alex','karen','daniel','moira','tessa','fiona','siri','allison','ava','tom'];
+  return arr.slice().sort(function(a,b){
+    const aS = preferred.some(function(p){ return (a.name||'').toLowerCase().indexOf(p)!==-1; }) ? 1 : 0;
+    const bS = preferred.some(function(p){ return (b.name||'').toLowerCase().indexOf(p)!==-1; }) ? 1 : 0;
+    return bS - aS;
+  })[0] || null;
+}
+
 function findVoice(lang){
   if(!voices.length) return null;
-  let v = voices.filter(function(x){ return x.lang && x.lang.replace('_','-').toLowerCase()===lang.toLowerCase(); });
-  if(v.length) return v[0];
-  const short = lang.split('-')[0].toLowerCase();
-  v = voices.filter(function(x){ return x.lang && x.lang.toLowerCase().indexOf(short)===0; });
-  return v.length ? v[0] : null;
+  const target = String(lang||'').toLowerCase().replace('_','-');
+  const short = target.split('-')[0];
+  // 1. Exact language match (e.g. en-US)
+  const exact = voices.filter(function(x){
+    return x.lang && x.lang.toLowerCase().replace('_','-')===target;
+  });
+  if(exact.length) return {voice: pickBestVoice(exact), exact: true, actualLang: target};
+  // 2. Same base + region present, but different region (e.g. en-GB for en-US request)
+  const loose = voices.filter(function(x){
+    const l = (x.lang||'').toLowerCase().replace('_','-');
+    return l.indexOf(short+'-')===0;
+  });
+  if(loose.length){
+    const v = pickBestVoice(loose);
+    return {voice: v, exact: false, actualLang: v.lang};
+  }
+  return null;
 }
+
 function updateVoiceStatus(){
   const el=$('#voiceStatus'); if(!el) return;
   if(!('speechSynthesis' in window)){
     el.innerHTML='<span class="bad">Trình duyệt này không hỗ trợ Web Speech API. Không thể phát âm thanh.</span>';
     return;
   }
-  const gb=findVoice('en-GB'), us=findVoice('en-US');
-  el.innerHTML = 'Giọng en-GB: <b>'+(gb?esc(gb.name):'không có trên thiết bị')+'</b> · '+
-                 'Giọng en-US: <b>'+(us?esc(us.name):'không có trên thiết bị')+'</b>'+
-                 '<br><span class="small">Danh sách giọng phụ thuộc vào thiết bị và hệ điều hành. Đây là giải pháp thay thế, không phải bản ghi âm người bản ngữ.</span>';
+  const gb=findVoice('en-GB');
+  const us=findVoice('en-US');
+  const gbName = gb ? (esc(gb.voice.name) + (gb.exact?'':' <span class="small">(thay thế)</span>')) : 'không có trên thiết bị';
+  const usName = us ? (esc(us.voice.name) + (us.exact?'':' <span class="small">(thay thế)</span>')) : 'không có trên thiết bị';
+  el.innerHTML = 'Giọng en-GB: <b>'+gbName+'</b> · Giọng en-US: <b>'+usName+'</b>' +
+    '<br><span class="small">Danh sách giọng phụ thuộc vào thiết bị và hệ điều hành. Đây là giải pháp thay thế, không phải bản ghi âm người bản ngữ. IPA Anh-Mỹ dùng chuẩn General American (GA).</span>';
 }
+
 if('speechSynthesis' in window){
   refreshVoices();
   window.speechSynthesis.onvoiceschanged = refreshVoices;
   setTimeout(refreshVoices, 400);
+  setTimeout(refreshVoices, 1500);
 }
 
 function speak(text, opts){
@@ -987,10 +990,16 @@ function speak(text, opts){
   u.lang = lang;
   u.rate = rate;
   u.pitch = 1;
-  const v = findVoice(lang);
-  if(v){ u.voice = v; }
-  else{
-    toast('Không tìm thấy giọng '+lang+' trên thiết bị. Đang dùng giọng mặc định — phát âm có thể không chuẩn.');
+  const found = findVoice(lang);
+  if(found && found.voice){
+    u.voice = found.voice;
+    if(!found.exact){
+      // Voice language differs from requested — align u.lang to the actual voice so the browser honours it
+      u.lang = found.actualLang;
+      toast('Không có giọng '+lang+' trên thiết bị. Đang dùng '+found.actualLang+' ('+found.voice.name+').');
+    }
+  } else {
+    toast('Không tìm thấy giọng '+lang+'. Đang dùng giọng mặc định của trình duyệt — phát âm có thể không chuẩn.');
   }
   u.onerror = function(){ /* silent */ };
   try{ window.speechSynthesis.speak(u); }catch(e){ toast('Không thể phát âm thanh trên thiết bị này.'); }
@@ -1024,6 +1033,12 @@ function fmtNote(t){
   if(inList) html+='</ul>';
   return html;
 }
+function estimateSyllables(ipa){
+  if(!ipa) return '?';
+  const clean=ipa.replace(/[\/ˈˌː\.\(\)]/g,'');
+  const m=clean.match(/eɪ|aɪ|ɔɪ|əʊ|oʊ|aʊ|ɪə|eə|ʊə|[iɪeæɑɒɔʊuʌəɜɐ]/g);
+  return m?m.length:'?';
+}
 function vocabCard(it){
   const wAttr=esc(it.w);
   let h='<div class="vcard">';
@@ -1042,12 +1057,6 @@ function vocabCard(it){
   h+='</div>';
   return h;
 }
-function estimateSyllables(ipa){
-  if(!ipa) return '?';
-  const clean=ipa.replace(/[\/ˈˌː\.\(\)]/g,'');
-  const m=clean.match(/eɪ|aɪ|ɔɪ|əʊ|oʊ|aʊ|ɪə|eə|ʊə|[iɪeæɑɒɔʊuʌəɜɐ]/g);
-  return m?m.length:'?';
-}
 function renderGroups(containerId, groups){
   const box=document.getElementById(containerId);
   let h='';
@@ -1064,7 +1073,6 @@ renderGroups('sec-a-body', SEC_A);
 renderGroups('sec-b-body', SEC_B);
 renderGroups('sec-c-body', SEC_C);
 
-/* ---------- Section D table ---------- */
 (function renderD(){
   const t=$('#d-table');
   let h='<thead><tr><th style="width:50%">Positive associations – Sắc thái tích cực</th><th style="width:50%">Negative associations – Sắc thái tiêu cực</th></tr></thead><tbody>';
@@ -1080,7 +1088,6 @@ renderGroups('sec-c-body', SEC_C);
   t.innerHTML=h;
 })();
 
-/* ---------- Pronunciation table ---------- */
 function renderPronTable(filter){
   const tbody=$('#pronTable tbody');
   const f=(filter||'').toLowerCase().trim();
@@ -1103,7 +1110,6 @@ renderPronTable('');
 $('#pronFilter').addEventListener('input', function(){ renderPronTable(this.value); });
 $('#pronCount').textContent = state.pronCount||0;
 
-/* ---------- Global play delegation ---------- */
 document.addEventListener('click', function(e){
   const btn = e.target.closest('button[data-say], button[data-saysentence]');
   if(!btn) return;
@@ -1119,11 +1125,12 @@ document.addEventListener('click', function(e){
   speak(word,{lang:lang});
 });
 
-/* ---------- Accent controls ---------- */
 const accentSel=$('#accentSel');
 accentSel.value=state.accent;
 accentSel.addEventListener('change', function(){
-  state.accent=this.value; saveState(); toast('Đã chọn: '+(this.value==='en-GB'?'British English':'American English'));
+  state.accent=this.value; saveState();
+  updateVoiceStatus();
+  toast('Đã chọn: '+(this.value==='en-GB'?'British English (en-GB)':'American English (en-US)'));
 });
 const slowBox=$('#slowMode');
 slowBox.checked=!!state.slow;
@@ -1682,7 +1689,7 @@ function renderFlash(){
   }else{
     inner.innerHTML='<div class="fw" style="font-size:19px">'+esc(v.w)+'</div>'+
       '<div class="fvi">'+esc(v.vi)+'</div>'+
-      '<div class="fipa">'+esc(v.gb||'')+' · '+esc(v.us||'')+'</div>'+
+      '<div class="fipa">GB: '+esc(v.gb||'')+' · US: '+esc(v.us||'')+'</div>'+
       '<div style="margin-top:10px"><button class="play" data-say="'+esc(v.w)+'">▶ Nghe</button></div>';
   }
   renderFlashProgress();
@@ -1726,13 +1733,14 @@ $('#mcq-submit').addEventListener('click', function(){
 $('#mcq-new').addEventListener('click', buildMCQ);
 
 /* ---------- A3: Fill in the blank ---------- */
+function escapeRegExp(s){ return String(s).replace(/[.*+?^${}()|[\]\\]/g,'\\$&'); }
 let fillQuestions=[], fillBank=[];
 function buildFill(){
   const withEx=VOCAB.filter(function(v){ return v.ex && v.ex.toLowerCase().indexOf(v.w.toLowerCase())!==-1; });
   const pool=shuffle(withEx).slice(0,8);
   fillBank=shuffle(pool.map(function(v){ return v.w; }));
   fillQuestions=pool.map(function(v){
-    const re=new RegExp(v.w.replace(/[-]/g,'[-]'),'i');
+    const re=new RegExp('\\b'+escapeRegExp(v.w)+'\\b','i');
     const blanked=v.ex.replace(re,'________');
     return {type:'text', q:blanked, accept:[v.w], why:'Đáp án: '+v.w+' — '+v.vi+'.'};
   });
@@ -1788,24 +1796,20 @@ $('#gbus-new').addEventListener('click', buildGbus);
 let mixedQuestions=[];
 function buildMixed(){
   const qs=[];
-  // 4 MCQ meaning
   shuffle(VOCAB).slice(0,4).forEach(function(v){
     const others=shuffle(VOCAB.filter(function(x){ return x.vi!==v.vi; })).slice(0,3).map(function(x){ return x.vi; });
     const opts=shuffle(others.concat([v.vi]));
     qs.push({type:'mcq', q:'Nghĩa của “'+v.w+'” là gì?', opts:opts, a:opts.indexOf(v.vi), why:'“'+v.w+'” = '+v.vi+'.'});
   });
-  // 3 fill
   const withEx=VOCAB.filter(function(v){ return v.ex && v.ex.toLowerCase().indexOf(v.w.toLowerCase())!==-1; });
   shuffle(withEx).slice(0,3).forEach(function(v){
-    const re=new RegExp(v.w,'i');
+    const re=new RegExp('\\b'+escapeRegExp(v.w)+'\\b','i');
     qs.push({type:'text', q:v.ex.replace(re,'________'), accept:[v.w], why:'Đáp án: '+v.w+' — '+v.vi+'.'});
   });
-  // 2 connotation
   shuffle(VOCAB.filter(function(v){ return v.connotation; })).slice(0,2).forEach(function(v){
     qs.push({type:'mcq', q:'“'+v.w+'” mang sắc thái nào?', opts:['Tích cực','Tiêu cực'],
              a: v.connotation==='positive'?0:1, why:'“'+v.w+'” = '+v.vi+'.'});
   });
-  // 1 pronunciation
   const diff=VOCAB.filter(function(v){ return v.gb && v.us && v.gb!==v.us; });
   if(diff.length){
     const v=shuffle(diff)[0];
@@ -2000,7 +2004,6 @@ function renderProgressDashboard(){
   rl.innerHTML=r;
 }
 
-/* ---------- reset ---------- */
 $('#resetBtn').addEventListener('click', function(){
   const ok=window.confirm('Bạn có chắc muốn đặt lại TOÀN BỘ tiến độ học tập? Hành động này không thể hoàn tác.');
   if(!ok) return;
